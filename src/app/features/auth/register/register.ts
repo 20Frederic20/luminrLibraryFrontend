@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { CardComponent } from '../../../shared/card/card';
+import { CardComponent } from '../../../shared/components/card/card';
 
 @Component({
   selector: 'app-register',
