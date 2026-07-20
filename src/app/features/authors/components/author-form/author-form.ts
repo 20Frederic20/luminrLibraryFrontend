@@ -11,7 +11,7 @@ import { AuthorRequest } from '../../models/author.model';
   templateUrl: './author-form.html',
   styleUrl: './author-form.css'
 })
-export class AuthorFormComponent {
+export class AuthorForm {
   private authorService = inject(AuthorService);
   private router = inject(Router);
 

@@ -1,14 +1,12 @@
 import { Routes } from '@angular/router';
 
 export const routes: Routes = [
-  // 1. Si l'utilisateur ne tape rien, on le redirige directement vers le login
   {
     path: '',
     redirectTo: 'auth/login',
     pathMatch: 'full'
   },
 
-  // 2. Groupe "auth" : Toutes les routes d'authentification sont regroupées ici
   {
     path: 'auth',
     children: [
@@ -23,13 +21,25 @@ export const routes: Routes = [
     ]
   },
 
-  // 3. Espace connecté : Le tableau de bord principal
   {
     path: 'dashboard',
     loadComponent: () => import('./features/dashboard//dashboard').then(m => m.Dashboard)
   },
 
-  // 4. Page inconnue (Erreur 404) : Redirection de sécurité vers le login
+  {
+    path: 'authors',
+    children: [
+      {
+        path: '',
+        loadComponent: () => import('./features/authors/components/author-list/author-list').then(m => m.AuthorList)
+      },
+      {
+        path: 'new',
+        loadComponent: () => import('./features/authors/components/author-form/author-form').then(m => m.AuthorForm)
+      }
+    ]
+  },
+
   {
     path: '**',
     redirectTo: 'auth/login'
