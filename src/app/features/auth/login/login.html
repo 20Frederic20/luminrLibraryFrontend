@@ -4,8 +4,8 @@
     <!-- On lie le formulaire Angular et on appelle la méthode onSubmit() lors de l'envoi -->
     <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
 
-        <!-- formControlName="username" fait le lien avec le FormControl du TypeScript -->
-        <input type="text" formControlName="username" placeholder="Username">
+        <!-- formControlName="email" fait le lien avec le FormControl du TypeScript -->
+        <input type="email" formControlName="email" placeholder="Email">
 
         <!-- formControlName="password" fait le lien également -->
         <input type="password" formControlName="password" placeholder="Password">

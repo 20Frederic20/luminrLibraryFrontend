@@ -14,29 +14,22 @@ export class Login {
   private router = inject(Router);
 
   loginForm = new FormGroup({
-    username: new FormControl('', [Validators.required]),
+    email: new FormControl('', [Validators.required, Validators.email]), // Remplacé username par email
     password: new FormControl('', [Validators.required])
   });
 
   onSubmit(): void {
     if (this.loginForm.valid) {
-      // On récupère les valeurs saisies (username et password)
       const credentials = {
-        username: this.loginForm.value.username!,
+        email: this.loginForm.value.email!, // Remplacé username par email
         password: this.loginForm.value.password!
       };
 
-      // On envoie le tout à Spring Boot via notre service
       this.authService.login(credentials).subscribe({
         next: (response) => {
-          console.log('Connexion réussie ! Token stocké.', response);
-          // Rediriger l'utilisateur vers le dashboard après la connexion
           this.router.navigate(['/dashboard']);
         },
-        error: (err) => {
-          console.error('Erreur de connexion (Identifiants incorrects, problème réseau...)', err);
-          alert('Identifiants incorrects ou serveur injoignable.');
-        }
+        error: (err) => alert('Identifiants incorrects.')
       });
     }
   }

@@ -10,7 +10,7 @@ export class AuthService {
   private http = inject(HttpClient);
   private apiUrl = 'http://localhost:8080/api/auth'; // L'URL de ton Spring Boot
 
-  login(credentials: { username: string; password: string }): Observable<AuthResponse> {
+  login(credentials: { email: string; password: string }): Observable<AuthResponse> {
     return this.http.post<AuthResponse>(`${this.apiUrl}/login`, credentials).pipe(
       tap(response => {
         localStorage.setItem('token', response.access_token);

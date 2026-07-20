@@ -1,12 +1,21 @@
-<p>register works!</p>
-<app-card>
-    <form>
-        <h2>Create Account</h2>
-        <input type="text" placeholder="Name">
-        <input type="email" placeholder="Email">
-        <input type="text" placeholder="Username">
-        <input type="password" placeholder="Password">
-        <button type="submit">Register</button>
-        <a href="/login">Already have an account?</a>
+<div class="register">
+    <h1>Inscription</h1>
+
+    <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+
+        <!-- Champ Prénom (firstName) -->
+        <input type="text" formControlName="firstName" placeholder="Prénom">
+
+        <!-- Champ Nom (lastName) -->
+        <input type="text" formControlName="lastName" placeholder="Nom de famille">
+
+        <!-- Champ Email -->
+        <input type="email" formControlName="email" placeholder="Adresse Email">
+
+        <!-- Champ Password -->
+        <input type="password" formControlName="password" placeholder="Mot de passe">
+
+        <button type="submit" [disabled]="registerForm.invalid">S'inscrire</button>
+
     </form>
-</app-card>
+</div>
