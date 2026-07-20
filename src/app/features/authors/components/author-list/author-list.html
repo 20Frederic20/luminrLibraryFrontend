@@ -11,6 +11,8 @@
     <div class="error-banner">{{ errorMessage }}</div>
   }
 
+  <button routerLink="/authors/new" class="btn-add">Ajouter un auteur</button>
+
   <!-- 3. Affichage de la liste si elle n'est pas vide -->
   @if (!isLoading && !errorMessage) {
     @if (authors.length === 0) {
