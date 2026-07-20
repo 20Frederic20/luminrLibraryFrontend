@@ -1,0 +1,42 @@
+<div class="author-list-container">
+  <h2>Gestion des Auteurs</h2>
+
+  <!-- 1. État de chargement -->
+  @if (isLoading) {
+    <div class="loading">Chargement des auteurs depuis le serveur...</div>
+  }
+
+  <!-- 2. Gestion des erreurs du backend -->
+  @if (errorMessage) {
+    <div class="error-banner">{{ errorMessage }}</div>
+  }
+
+  <!-- 3. Affichage de la liste si elle n'est pas vide -->
+  @if (!isLoading && !errorMessage) {
+    @if (authors.length === 0) {
+      <p class="no-data">Aucun auteur enregistré pour le moment.</p>
+    } @else {
+      <table class="authors-table">
+        <thead>
+          <tr>
+            <th>Prénom</th>
+            <th>Nom</th>
+            <th>Lieu de naissance</th>
+            <th>Date de naissance</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (author of authors; track author.id) {
+            <tr>
+              <td>{{ author.firstName }}</td>
+              <td>{{ author.lastName }}</td>
+              <td>{{ author.birthPlace || 'Non renseigné' }}</td>
+              <!-- Le pipe 'date' formate la chaîne reçue de Spring Boot au format français -->
+              <td>{{ author.birthDate ? (author.birthDate | date:'dd/MM/yyyy') : 'Non renseignée' }}</td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    }
+  }
+</div>

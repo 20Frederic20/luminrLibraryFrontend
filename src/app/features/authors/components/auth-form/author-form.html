@@ -1,0 +1,44 @@
+<div class="author-form-container">
+  <h2>Ajouter un nouvel Auteur</h2>
+
+  <form [formGroup]="authorForm" (ngSubmit)="onSubmit()">
+
+    <!-- Champ Prénom -->
+    <div class="form-group">
+      <label for="firstName">Prénom *</label>
+      <input type="text" id="firstName" formControlName="firstName" placeholder="Ex: Victor">
+      @if (authorForm.get('firstName')?.invalid && authorForm.get('firstName')?.touched) {
+        <small class="error-text">Le prénom est obligatoire.</small>
+      }
+    </div>
+
+    <!-- Champ Nom -->
+    <div class="form-group">
+      <label for="lastName">Nom de famille *</label>
+      <input type="text" id="lastName" formControlName="lastName" placeholder="Ex: Hugo">
+      @if (authorForm.get('lastName')?.invalid && authorForm.get('lastName')?.touched) {
+        <small class="error-text">Le nom de famille est obligatoire.</small>
+      }
+    </div>
+
+    <!-- Champ Lieu de naissance -->
+    <div class="form-group">
+      <label for="birthPlace">Lieu de naissance</label>
+      <input type="text" id="birthPlace" formControlName="birthPlace" placeholder="Ex: Besançon, France">
+    </div>
+
+    <!-- Champ Date de naissance -->
+    <div class="form-group">
+      <label for="birthDate">Date de naissance</label>
+      <!-- Le type date envoie automatiquement une chaîne au format YYYY-MM-DD exploitable par un LocalDate Java -->
+      <input type="date" id="birthDate" formControlName="birthDate">
+    </div>
+
+    <!-- Actions du formulaire -->
+    <div class="form-actions">
+      <button type="button" class="btn-secondary" routerLink="/authors">Annuler</button>
+      <button type="submit" class="btn-primary" [disabled]="authorForm.invalid">Enregistrer l'auteur</button>
+    </div>
+
+  </form>
+</div>
