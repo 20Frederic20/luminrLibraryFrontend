@@ -1,0 +1,39 @@
+<div class="category-list-container">
+  <div class="list-header">
+    <h2>Gestion des Catégories</h2>
+    <button routerLink="/categories/new" class="btn-primary">Nouvelle Catégorie</button>
+  </div>
+
+  @if (isLoading) {
+    <div class="loading-state">Récupération des catégories en cours...</div>
+  }
+
+  @if (errorMessage) {
+    <div class="error-banner">{{ errorMessage }}</div>
+  }
+
+  @if (!isLoading && !errorMessage) {
+    @if (categories.length === 0) {
+      <p class="no-data">Aucune catégorie disponible. Cliquez sur "Nouvelle Catégorie" pour commencer.</p>
+    } @else {
+      <table class="categories-table">
+        <thead>
+          <tr>
+            <th>Nom de la catégorie</th>
+            <th>Description</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (category of categories; track category.id) {
+            <tr>
+              <td class="category-name">{{ category.name }}</td>
+              <td class="category-desc">
+                {{ category.description || 'Aucune description fournie' }}
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    }
+  }
+</div>
