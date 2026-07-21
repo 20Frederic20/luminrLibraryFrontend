@@ -1,0 +1,86 @@
+<div class="book-list-container">
+  <div class="list-header">
+    <h2>Catalogue des Livres</h2>
+    <button routerLink="/books/new" class="btn-primary">+ Ajouter un livre</button>
+  </div>
+
+  <!-- État de chargement -->
+  @if (isLoading) {
+    <div class="loading-state">Chargement du catalogue en cours...</div>
+  }
+
+  <!-- Banner d'erreur -->
+  @if (errorMessage) {
+    <div class="error-banner">{{ errorMessage }}</div>
+  }
+
+  <!-- Tableau des livres -->
+  @if (!isLoading && !errorMessage) {
+    @if (books.length === 0) {
+      <p class="no-data">Aucun livre enregistré dans le catalogue pour le moment.</p>
+    } @else {
+      <table class="books-table">
+        <thead>
+          <tr>
+            <th>Titre</th>
+            <th>ISBN</th>
+            <th>Catégorie</th>
+            <th>Éditeur</th>
+            <th>Auteur(s)</th>
+            <th>Stock (Dispo / Total)</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (book of books; track book.id) {
+            <tr>
+              <!-- Titre & Résumé/Description -->
+              <td class="book-title">
+                <strong>{{ book.title }}</strong>
+                @if (book.description) {
+                  <small class="book-desc">{{ book.description }}</small>
+                }
+              </td>
+
+              <!-- ISBN -->
+              <td><code>{{ book.isbn }}</code></td>
+
+              <!-- Catégorie (Relation CategoryResponse) -->
+              <td>
+                <span class="tag category-tag">{{ book.category.name }}</span>
+              </td>
+
+              <!-- Éditeur (Relation PublisherResponse) -->
+              <td>{{ book.publisher.name }}</td>
+
+              <!-- Liste des Auteurs (Relation List<AuthorResponse>) -->
+              <td>
+                @if (book.authors && book.authors.length > 0) {
+                  <ul class="authors-list">
+                    @for (author of book.authors; track author.id) {
+                      <li>{{ author.firstName }} {{ author.lastName }}</li>
+                    }
+                  </ul>
+                } @else {
+                  <span class="text-muted">Aucun auteur</span>
+                }
+              </td>
+
+              <!-- Stock & Disponibilité -->
+              <td>
+                <span [class.out-of-stock]="book.availableQuantity === 0" class="stock-badge">
+                  {{ book.availableQuantity }} / {{ book.quantity }}
+                </span>
+              </td>
+
+              <!-- Actions -->
+              <td class="actions-cell">
+                <button (click)="deleteBook(book.id)" class="btn-danger-sm">Supprimer</button>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    }
+  }
+</div>
