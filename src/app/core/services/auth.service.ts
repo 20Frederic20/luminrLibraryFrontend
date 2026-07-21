@@ -8,7 +8,7 @@ import { AuthResponse } from '../models/auth.model';
 })
 export class AuthService {
   private http = inject(HttpClient);
-  private apiUrl = 'http://localhost:8080/api/auth'; // L'URL de ton Spring Boot
+  private apiUrl = 'http://localhost:8082/api/auth'; // L'URL de ton Spring Boot
 
   login(credentials: { email: string; password: string }): Observable<AuthResponse> {
     return this.http.post<AuthResponse>(`${this.apiUrl}/login`, credentials).pipe(

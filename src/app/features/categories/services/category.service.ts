@@ -8,7 +8,7 @@ import { CategoryRequest, CategoryResponse } from '../models/category.model';
 })
 export class CategoryService {
   private http = inject(HttpClient);
-  private apiUrl = 'http://localhost:8080/api/categories';
+  private apiUrl = 'http://localhost:8082/api/categories';
 
   getCategories(): Observable<CategoryResponse[]> {
     return this.http.get<CategoryResponse[]>(this.apiUrl);

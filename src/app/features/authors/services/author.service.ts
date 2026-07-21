@@ -8,7 +8,7 @@ import { AuthorRequest, AuthorResponse } from '../models/author.model';
 })
 export class AuthorService {
   private http = inject(HttpClient);
-  private apiUrl = 'http://localhost:8080/api/authors'; // L'URL de ton contrôleur Java
+  private apiUrl = 'http://localhost:8082/api/authors'; // L'URL de ton contrôleur Java
 
   // Récupérer la liste des auteurs (renvoie un tableau d'AuthorResponse)
   getAuthors(): Observable<AuthorResponse[]> {
