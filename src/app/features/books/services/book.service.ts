@@ -8,7 +8,7 @@ import { BookResponse, SaveBookRequest } from '../models/book.model';
 })
 export class BookService {
   private http = inject(HttpClient);
-  private apiUrl = 'http://localhost:8080/api/books'; // Adapte selon ton URL backend
+  private apiUrl = 'http://localhost:8082/api/books'; // Adapte selon ton URL backend
 
   // Récupérer tous les livres
   getBooks(): Observable<BookResponse[]> {

@@ -1,0 +1,87 @@
+<div class="book-form-container">
+  <h2>Ajouter un nouveau Livre</h2>
+
+  @if (isLoadingData) {
+    <div class="loading-state">Chargement des catégories, éditeurs et auteurs...</div>
+  } @else {
+    <form [formGroup]="bookForm" (ngSubmit)="onSubmit()">
+
+      <!-- Titre & ISBN -->
+      <div class="form-group">
+        <label for="title">Titre *</label>
+        <input type="text" id="title" formControlName="title" placeholder="Ex: Clean Architecture">
+        @if (bookForm.get('title')?.invalid && bookForm.get('title')?.touched) {
+          <small class="error-text">Le titre est obligatoire.</small>
+        }
+      </div>
+
+      <div class="form-group">
+        <label for="isbn">ISBN *</label>
+        <input type="text" id="isbn" formControlName="isbn" placeholder="Ex: 978-0134494166">
+        @if (bookForm.get('isbn')?.invalid && bookForm.get('isbn')?.touched) {
+          <small class="error-text">L'ISBN est obligatoire.</small>
+        }
+      </div>
+
+      <!-- Catégorie & Éditeur -->
+      <div class="form-group">
+        <label for="categoryId">Catégorie *</label>
+        <select id="categoryId" formControlName="categoryId">
+          <option value="" disabled selected>-- Choisir une catégorie --</option>
+          @for (cat of categories; track cat.id) {
+            <option [value]="cat.id">{{ cat.name }}</option>
+          }
+        </select>
+        @if (bookForm.get('categoryId')?.invalid && bookForm.get('categoryId')?.touched) {
+          <small class="error-text">La catégorie est obligatoire.</small>
+        }
+      </div>
+
+      <div class="form-group">
+        <label for="publisherId">Éditeur *</label>
+        <select id="publisherId" formControlName="publisherId">
+          <option value="" disabled selected>-- Choisir un éditeur --</option>
+          @for (pub of publishers; track pub.id) {
+            <option [value]="pub.id">{{ pub.name }} ({{ pub.code }})</option>
+          }
+        </select>
+        @if (bookForm.get('publisherId')?.invalid && bookForm.get('publisherId')?.touched) {
+          <small class="error-text">L'éditeur est obligatoire.</small>
+        }
+      </div>
+
+      <!-- Quantité & Date -->
+      <div class="form-group">
+        <label for="quantity">Quantité en stock *</label>
+        <input type="number" id="quantity" formControlName="quantity" min="0">
+      </div>
+
+      <div class="form-group">
+        <label for="publicationDate">Date de parution</label>
+        <input type="date" id="publicationDate" formControlName="publicationDate">
+      </div>
+
+      <!-- Multi-sélection Auteurs -->
+      <div class="form-group">
+        <label for="authors">Auteur(s)</label>
+        <select id="authors" formControlName="authorIds" multiple>
+          @for (author of authors; track author.id) {
+            <option [value]="author.id">{{ author.firstName }} {{ author.lastName }}</option>
+          }
+        </select>
+      </div>
+
+      <!-- Description -->
+      <div class="form-group">
+        <label for="description">Description</label>
+        <textarea id="description" formControlName="description" rows="3"></textarea>
+      </div>
+
+      <div class="form-actions">
+        <button type="button" class="btn-secondary" routerLink="/books">Annuler</button>
+        <button type="submit" class="btn-primary" [disabled]="bookForm.invalid">Enregistrer le livre</button>
+      </div>
+
+    </form>
+  }
+</div>
