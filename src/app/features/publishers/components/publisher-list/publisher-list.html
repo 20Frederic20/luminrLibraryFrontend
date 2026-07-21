@@ -1,0 +1,39 @@
+<div class="publisher-list-container">
+  <div class="list-header">
+    <h2>Gestion des Éditeurs</h2>
+    <button routerLink="/publishers/new" class="btn-primary">Nouvel Éditeur</button>
+  </div>
+
+  @if (isLoading) {
+    <div class="loading-state">Chargement des éditeurs...</div>
+  }
+
+  @if (errorMessage) {
+    <div class="error-banner">{{ errorMessage }}</div>
+  }
+
+  @if (!isLoading && !errorMessage) {
+    @if (publishers.length === 0) {
+      <p class="no-data">Aucun éditeur enregistré.</p>
+    } @else {
+      <table class="publishers-table">
+        <thead>
+          <tr>
+            <th>Code</th>
+            <th>Nom</th>
+            <th>Adresse</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (publisher of publishers; track publisher.id) {
+            <tr>
+              <td><code>{{ publisher.code }}</code></td>
+              <td>{{ publisher.name }}</td>
+              <td>{{ publisher.address || 'Non renseignée' }}</td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    }
+  }
+</div>

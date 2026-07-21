@@ -1,0 +1,33 @@
+<div class="publisher-form-container">
+  <h2>Ajouter un Éditeur</h2>
+
+  <form [formGroup]="publisherForm" (ngSubmit)="onSubmit()">
+
+    <div class="form-group">
+      <label for="code">Code Éditeur *</label>
+      <input type="text" id="code" formControlName="code" placeholder="Ex: EYR, HACH, OREIL...">
+      @if (publisherForm.get('code')?.invalid && publisherForm.get('code')?.touched) {
+        <small class="error-text">Le code éditeur est obligatoire.</small>
+      }
+    </div>
+
+    <div class="form-group">
+      <label for="name">Nom de l'éditeur *</label>
+      <input type="text" id="name" formControlName="name" placeholder="Ex: Eyrolles, Hachette...">
+      @if (publisherForm.get('name')?.invalid && publisherForm.get('name')?.touched) {
+        <small class="error-text">Le nom est obligatoire.</small>
+      }
+    </div>
+
+    <div class="form-group">
+      <label for="address">Adresse</label>
+      <input type="text" id="address" formControlName="address" placeholder="Ex: Paris, France">
+    </div>
+
+    <div class="form-actions">
+      <button type="button" class="btn-secondary" routerLink="/publishers">Annuler</button>
+      <button type="submit" class="btn-primary" [disabled]="publisherForm.invalid">Enregistrer</button>
+    </div>
+
+  </form>
+</div>

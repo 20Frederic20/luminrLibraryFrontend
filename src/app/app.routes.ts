@@ -41,6 +41,20 @@ export const routes: Routes = [
   },
 
   {
+    path: 'publishers',
+    children: [
+      {
+        path: '',
+        loadComponent: () => import('./features/publishers/components/publisher-list/publisher-list').then(m => m.PublisherList)
+      },
+      {
+        path: 'new',
+        loadComponent: () => import('./features/publishers/components/publisher-form/publisher-form').then(m => m.PublisherForm)
+      }
+    ]
+  },
+
+  {
     path: '**',
     redirectTo: 'auth/login'
   }
