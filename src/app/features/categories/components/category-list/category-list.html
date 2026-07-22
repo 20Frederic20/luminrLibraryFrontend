@@ -1,39 +1,52 @@
-<div class="category-list-container">
-  <div class="list-header">
-    <h2>Gestion des Catégories</h2>
-    <button routerLink="/categories/new" class="btn-primary">Nouvelle Catégorie</button>
+<div class="p-6 max-w-7xl mx-auto">
+
+  <!-- En-tête -->
+  <div class="flex justify-between items-center mb-6">
+    <div>
+      <h1 class="text-2xl font-bold text-slate-800">Gestion des Catégories</h1>
+      <p class="text-sm text-slate-500">Gérez le catalogue de catégories de livres</p>
+    </div>
+    <a routerLink="/categories/new"
+       class="inline-flex items-center px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-lg shadow-sm transition-colors">
+      + Nouvelle Catégorie
+    </a>
   </div>
 
-  @if (isLoading) {
-    <div class="loading-state">Récupération des catégories en cours...</div>
-  }
+  <!-- Composant d'état (Chargement / Erreur / Vide) -->
+  <app-data-loader
+    [isLoading]="isLoading"
+    [errorMessage]="errorMessage"
+    [isEmpty]="categories.length === 0"
+    emptyMessage="Aucune catégorie enregistrée pour le moment.">
+    <a empty-action routerLink="/categories/new" class="mt-3 inline-block text-sm text-blue-600 hover:underline font-medium">
+      Créer une première catégorie
+    </a>
+  </app-data-loader>
 
-  @if (errorMessage) {
-    <div class="error-banner">{{ errorMessage }}</div>
-  }
-
-  @if (!isLoading && !errorMessage) {
-    @if (categories.length === 0) {
-      <p class="no-data">Aucune catégorie disponible. Cliquez sur "Nouvelle Catégorie" pour commencer.</p>
-    } @else {
-      <table class="categories-table">
-        <thead>
+  <!-- Tableau affiché uniquement si les données sont prêtes -->
+  @if (!isLoading && !errorMessage && categories.length > 0) {
+    <div class="overflow-x-auto rounded-lg border border-slate-200 shadow-sm">
+      <table class="w-full text-left text-sm text-slate-600">
+        <thead class="bg-slate-50 text-xs uppercase font-semibold text-slate-500 border-b border-slate-200">
           <tr>
-            <th>Nom de la catégorie</th>
-            <th>Description</th>
+            <th class="px-6 py-3">Nom de la catégorie</th>
+            <th class="px-6 py-3">Description</th>
           </tr>
         </thead>
-        <tbody>
+        <tbody class="divide-y divide-slate-200 bg-white">
           @for (category of categories; track category.id) {
-            <tr>
-              <td class="category-name">{{ category.name }}</td>
-              <td class="category-desc">
-                {{ category.description || 'Aucune description fournie' }}
+            <tr class="hover:bg-slate-50/50 transition-colors">
+              <td class="px-6 py-4 font-medium text-slate-900">
+                {{ category.name }}
+              </td>
+              <td class="px-6 py-4 text-slate-500">
+                {{ category.description || 'Aucune description' }}
               </td>
             </tr>
           }
         </tbody>
       </table>
-    }
+    </div>
   }
+
 </div>
