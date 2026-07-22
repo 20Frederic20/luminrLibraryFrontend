@@ -1,86 +1,47 @@
-<div class="book-list-container">
-  <div class="list-header">
-    <h2>Catalogue des Livres</h2>
-    <button routerLink="/books/new" class="btn-primary">+ Ajouter un livre</button>
+<div class="p-6 max-w-7xl mx-auto space-y-6">
+
+  <!-- En-tête -->
+  <div class="flex justify-between items-center">
+    <div>
+      <h1 class="text-2xl font-bold text-slate-800">Catalogue de Livres</h1>
+      <p class="text-sm text-slate-500">Gérez le stock et la disponibilité des livres</p>
+    </div>
+    <a routerLink="/books/new"
+       class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-medium text-sm rounded-lg shadow-sm transition-colors flex items-center gap-1">
+      <span>+</span>
+      <span>Nouveau Livre</span>
+    </a>
   </div>
 
-  <!-- État de chargement -->
-  @if (isLoading) {
-    <div class="loading-state">Chargement du catalogue en cours...</div>
-  }
+  <!-- DataTable -->
+  <app-data-table
+    [data]="books()"
+    [columns]="columns"
+    [isLoading]="isLoading()"
+    [errorMessage]="errorMessage()"
+    emptyMessage="Aucun livre enregistré dans la base de données.">
 
-  <!-- Banner d'erreur -->
-  @if (errorMessage) {
-    <div class="error-banner">{{ errorMessage }}</div>
-  }
+    <ng-template appTableActions let-book>
+      <div class="flex items-center justify-end space-x-3">
 
-  <!-- Tableau des livres -->
-  @if (!isLoading && !errorMessage) {
-    @if (books.length === 0) {
-      <p class="no-data">Aucun livre enregistré dans le catalogue pour le moment.</p>
-    } @else {
-      <table class="books-table">
-        <thead>
-          <tr>
-            <th>Titre</th>
-            <th>ISBN</th>
-            <th>Catégorie</th>
-            <th>Éditeur</th>
-            <th>Auteur(s)</th>
-            <th>Stock (Dispo / Total)</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          @for (book of books; track book.id) {
-            <tr>
-              <!-- Titre & Résumé/Description -->
-              <td class="book-title">
-                <strong>{{ book.title }}</strong>
-                @if (book.description) {
-                  <small class="book-desc">{{ book.description }}</small>
-                }
-              </td>
+        <!-- Stock status badge -->
+        <span class="px-2 py-0.5 text-xs font-semibold rounded-full"
+              [ngClass]="book.availableQuantity > 0 ? 'bg-emerald-50 text-emerald-700 border border-emerald-200' : 'bg-rose-50 text-rose-700 border border-rose-200'">
+          Dispo: {{ book.availableQuantity }}/{{ book.quantity }}
+        </span>
 
-              <!-- ISBN -->
-              <td><code>{{ book.isbn }}</code></td>
+        <a [routerLink]="['/books/edit', book.id]"
+           class="px-2.5 py-1 text-xs font-medium text-blue-600 hover:bg-blue-50 rounded-md transition-colors">
+          Éditer
+        </a>
 
-              <!-- Catégorie (Relation CategoryResponse) -->
-              <td>
-                <span class="tag category-tag">{{ book.category.name }}</span>
-              </td>
+        <button (click)="deleteBook(book)"
+                class="px-2.5 py-1 text-xs font-medium text-red-600 hover:bg-red-50 rounded-md transition-colors">
+          Supprimer
+        </button>
+      </div>
+    </ng-template>
 
-              <!-- Éditeur (Relation PublisherResponse) -->
-              <td>{{ book.publisher.name }}</td>
+  </app-data-table>
 
-              <!-- Liste des Auteurs (Relation List<AuthorResponse>) -->
-              <td>
-                @if (book.authors && book.authors.length > 0) {
-                  <ul class="authors-list">
-                    @for (author of book.authors; track author.id) {
-                      <li>{{ author.firstName }} {{ author.lastName }}</li>
-                    }
-                  </ul>
-                } @else {
-                  <span class="text-muted">Aucun auteur</span>
-                }
-              </td>
-
-              <!-- Stock & Disponibilité -->
-              <td>
-                <span [class.out-of-stock]="book.availableQuantity === 0" class="stock-badge">
-                  {{ book.availableQuantity }} / {{ book.quantity }}
-                </span>
-              </td>
-
-              <!-- Actions -->
-              <td class="actions-cell">
-                <button (click)="deleteBook(book.id)" class="btn-danger-sm">Supprimer</button>
-              </td>
-            </tr>
-          }
-        </tbody>
-      </table>
-    }
-  }
 </div>

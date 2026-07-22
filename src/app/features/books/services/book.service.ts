@@ -2,6 +2,8 @@ import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { BookResponse, SaveBookRequest } from '../models/book.model';
+import { ApiResponse, Page } from '../../../core/models/api-response.model';
+import { unwrapPage } from '../../../core/utils/rxjs-operator';
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +14,9 @@ export class BookService {
 
   // Récupérer tous les livres
   getBooks(): Observable<BookResponse[]> {
-    return this.http.get<BookResponse[]>(this.apiUrl);
+    return this.http
+      .get<ApiResponse<Page<BookResponse>>>(this.apiUrl)
+      .pipe(unwrapPage());
   }
 
   // Récupérer un livre par son UUID

@@ -50,8 +50,15 @@
               @for (col of columns; track col.key) {
                 <td class="px-6 py-4" [ngClass]="col.class || ''">
                   @if (col.cellTemplate) {
+                    <!-- 1. Si un template Angular personnalisé est fourni -->
                     <ng-container *ngTemplateOutlet="col.cellTemplate; context: { $implicit: row }"></ng-container>
+                  } @else if (col.formatter) {
+                    <!-- 2. NOUVEAU : Si la fonction formatter() existe sur la colonne -->
+                    <span class="font-medium text-slate-800">
+                      {{ col.formatter(row) }}
+                    </span>
                   } @else {
+                    <!-- 3. Sinon, affichage direct de la valeur -->
                     <span class="font-medium text-slate-800">
                       {{ getCellValue(row, col.key) ?? '—' }}
                     </span>
