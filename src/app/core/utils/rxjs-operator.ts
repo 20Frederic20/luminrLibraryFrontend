@@ -11,3 +11,11 @@ export function unwrapPage<T>() {
     );
   };
 }
+
+export function unwrapData<T>() {
+  return (source$: Observable<ApiResponse<T>>): Observable<T> => {
+    return source$.pipe(
+      map(response => response.data)
+    );
+  };
+}

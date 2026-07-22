@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { BookResponse, SaveBookRequest } from '../models/book.model';
 import { ApiResponse, Page } from '../../../core/models/api-response.model';
-import { unwrapPage } from '../../../core/utils/rxjs-operator';
+import { unwrapData, unwrapPage } from '../../../core/utils/rxjs-operator';
 
 @Injectable({
   providedIn: 'root'
@@ -21,7 +21,7 @@ export class BookService {
 
   // Récupérer un livre par son UUID
   getBookById(id: string): Observable<BookResponse> {
-    return this.http.get<BookResponse>(`${this.apiUrl}/${id}`);
+    return this.http.get<ApiResponse<BookResponse>>(`${this.apiUrl}/${id}`).pipe(unwrapData());
   }
 
   // Créer un nouveau livre (CreateBookRequest)

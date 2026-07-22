@@ -88,6 +88,12 @@ export const routes: Routes = [
         canActivate: [authGuard, roleGuard],
         data: { expectedRoles: ['ADMIN', 'MANAGER'] },
         loadComponent: () => import('./features/books/components/book-form/book-form').then(m => m.BookForm)
+      },
+      {
+        path: 'edit/:id',
+        canActivate: [authGuard, roleGuard],
+        data: { expectedRoles: ['ADMIN', 'MANAGER'] },
+        loadComponent: () => import('./features/books/components/book-form/book-form').then(m => m.BookForm)
       }
     ]
   },

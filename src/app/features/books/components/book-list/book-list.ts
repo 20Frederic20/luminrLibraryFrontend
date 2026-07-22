@@ -1,6 +1,6 @@
 import { Component, OnInit, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { BookService } from '../../services/book.service';
 import { BookResponse } from '../../models/book.model';
 import { DataTableComponent } from '../../../../shared/components/data-table/data-table.component';
@@ -15,6 +15,7 @@ import { DataTableActionDirective } from '../../../../shared/components/data-tab
 })
 export class BookList implements OnInit {
   private bookService = inject(BookService);
+  private router = inject(Router);
 
   books = signal<BookResponse[]>([]);
   isLoading = signal<boolean>(true);
@@ -45,6 +46,10 @@ export class BookList implements OnInit {
         this.isLoading.set(false);
       }
     });
+  }
+
+  updateBook(book: BookResponse): void {
+    this.router.navigate(['/books/edit', book.id]);
   }
 
   deleteBook(book: BookResponse): void {
