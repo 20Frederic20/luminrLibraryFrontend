@@ -1,7 +1,8 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, tap } from 'rxjs';
+import { Observable, map } from 'rxjs';
 import { AuthResponse } from '../models/auth.model';
+import { ApiResponse } from '../models/api.model';
 
 @Injectable({
   providedIn: 'root' // Disponible partout dans l'application
@@ -11,10 +12,13 @@ export class AuthService {
   private apiUrl = 'http://localhost:8082/api/auth'; // L'URL de ton Spring Boot
 
   login(credentials: { email: string; password: string }): Observable<AuthResponse> {
-    return this.http.post<AuthResponse>(`${this.apiUrl}/login`, credentials).pipe(
-      tap(response => {
-        localStorage.setItem('token', response.access_token);
-        localStorage.setItem('refresh_token', response.refresh_token);
+    return this.http.post<ApiResponse<AuthResponse>>(`${this.apiUrl}/login`, credentials).pipe(
+      map(response => {
+        localStorage.setItem('accessToken', response.data.accessToken);
+        localStorage.setItem('refreshToken', response.data.refreshToken);
+        localStorage.setItem('email', response.data.email);
+        localStorage.setItem('roles', JSON.stringify(response.data.roles));
+        return response.data;
       })
     );
   }
@@ -24,11 +28,14 @@ export class AuthService {
   }
 
   isLoggedIn(): boolean {
-    return !!localStorage.getItem('access_token');
+    return !!localStorage.getItem('accessToken');
   }
 
   // Se déconnecter
   logout(): void {
-    localStorage.removeItem('access_token');
+    localStorage.removeItem('accessToken');
+    localStorage.removeItem('refreshToken');
+    localStorage.removeItem('email');
+    localStorage.removeItem('roles');
   }
 }
