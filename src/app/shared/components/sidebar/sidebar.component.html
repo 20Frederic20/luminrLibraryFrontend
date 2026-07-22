@@ -1,0 +1,59 @@
+<aside class="w-64 bg-slate-900 text-slate-300 min-h-screen flex flex-col border-r border-slate-800">
+
+  <!-- Logo / Header -->
+  <div class="h-16 flex items-center px-6 border-b border-slate-800 space-x-3">
+    <div class="w-8 h-8 rounded-lg bg-blue-600 flex items-center justify-center text-white font-bold text-xl">
+      L
+    </div>
+    <span class="font-bold text-lg text-white tracking-wide">LibrarX Admin</span>
+  </div>
+
+  <!-- Navigation Dynamique -->
+  <nav class="flex-1 px-4 py-6 space-y-2 overflow-y-auto">
+
+    <!-- Lien Accueil / Dashboard Général -->
+    <a routerLink="/dashboard"
+       routerLinkActive="bg-blue-600/10 text-blue-400 border-l-4 border-blue-500"
+       class="flex items-center px-4 py-3 rounded-lg text-sm font-medium hover:bg-slate-800 transition-colors">
+      <svg class="w-5 h-5 mr-3 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 00-1-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
+      Tableau de bord
+    </a>
+
+    <!-- Boucle Dynamique sur les Menus -->
+    @for (menu of menuItems; track menu.title; let i = $index) {
+      <div class="space-y-1">
+
+        <!-- Entête de section/menu -->
+        <button (click)="toggleMenu(i)"
+                class="w-full flex items-center justify-between px-4 py-3 rounded-lg text-sm font-medium hover:bg-slate-800 transition-colors text-slate-200">
+          <div class="flex items-center space-x-3">
+            <span class="w-5 h-5 text-slate-400">
+              <!-- Icône dynamique simple (remplaçable par un composant d'icône) -->
+              <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/></svg>
+            </span>
+            <span>{{ menu.title }}</span>
+          </div>
+          <!-- Flèche accordéon -->
+          <svg class="w-4 h-4 transform transition-transform duration-200"
+               [ngClass]="openMenuIndex() === i ? 'rotate-180' : ''"
+               fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+        </button>
+
+        <!-- Sous-actions (Lister / Ajouter) -->
+        @if (openMenuIndex() === i) {
+          <div class="pl-11 pr-2 space-y-1 py-1">
+            @for (action of menu.actions; track action.route) {
+              <a [routerLink]="action.route"
+                 routerLinkActive="text-blue-400 font-semibold bg-blue-500/10"
+                 [routerLinkActiveOptions]="{ exact: true }"
+                 class="flex items-center space-x-2 px-3 py-2 rounded-md text-xs text-slate-400 hover:text-white hover:bg-slate-800 transition-colors">
+                <span>•</span>
+                <span>{{ action.label }}</span>
+              </a>
+            }
+          </div>
+        }
+      </div>
+    }
+  </nav>
+</aside>
