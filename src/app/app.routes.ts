@@ -55,6 +55,34 @@ export const routes: Routes = [
   },
 
   {
+    path: 'categories',
+    children: [
+      {
+        path: '',
+        loadComponent: () => import('./features/categories/components/category-list/category-list').then(m => m.CategoryList)
+      },
+      {
+        path: 'new',
+        loadComponent: () => import('./features/categories/components/category-form/category-form').then(m => m.CategoryForm)
+      }
+    ]
+  },
+
+  {
+    path: 'books',
+    children: [
+      {
+        path: '',
+        loadComponent: () => import('./features/books/components/book-list/book-list').then(m => m.BookList)
+      },
+      {
+        path: 'new',
+        loadComponent: () => import('./features/books/components/book-form/book-form').then(m => m.BookForm)
+      }
+    ]
+  },
+
+  {
     path: '**',
     redirectTo: 'auth/login'
   }
