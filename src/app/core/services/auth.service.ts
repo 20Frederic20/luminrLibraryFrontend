@@ -28,6 +28,11 @@ export class AuthService {
     return roles ? JSON.parse(roles) : [];
   }
 
+  hasAnyRole(allowedRoles: string[]): boolean {
+    const userRoles = this.getUserRoles();
+    return userRoles.some(role => allowedRoles.includes(role));
+  }
+
   register(userData: any): Observable<any> {
     return this.http.post(`${this.apiUrl}/register`, userData);
   }
