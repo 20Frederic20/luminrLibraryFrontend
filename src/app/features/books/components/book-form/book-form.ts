@@ -20,7 +20,7 @@ import { AuthorResponse } from '../../../authors/models/author.model';
   templateUrl: './book-form.html',
   styleUrl: './book-form.css'
 })
-export class BookFormComponent implements OnInit {
+export class BookForm implements OnInit {
   private bookService = inject(BookService);
   private categoryService = inject(CategoryService);
   private publisherService = inject(PublisherService);

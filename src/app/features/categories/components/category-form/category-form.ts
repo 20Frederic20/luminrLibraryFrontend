@@ -11,7 +11,7 @@ import { CategoryRequest } from '../../models/category.model';
   templateUrl: './category-form.html',
   styleUrl: './category-form.css'
 })
-export class CategoryFormComponent {
+export class CategoryForm {
   private categoryService = inject(CategoryService);
   private router = inject(Router);
 
