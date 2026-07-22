@@ -1,6 +1,6 @@
-import { AuthorResponse } from '../../authors/models/author.model';
-import { CategoryResponse } from '../../categories/models/category.model';
-import { PublisherResponse } from '../../publishers/models/publisher.model';
+import { AuthorResponse } from '../../../authors/models/author.model';
+import { CategoryResponse } from '../../../categories/models/category.model';
+import { PublisherResponse } from '../../../publishers/models/publisher.model';
 
 // --- Modèle principal de lecture (Calqué sur BookResponse.java) ---
 

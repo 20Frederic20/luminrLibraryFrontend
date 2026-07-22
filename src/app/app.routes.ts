@@ -88,19 +88,19 @@ export const routes: Routes = [
         children: [
           {
             path: '',
-            loadComponent: () => import('./features/books/components/book-list/book-list').then(m => m.BookList)
+            loadComponent: () => import('./features/admin/books/components/book-list/book-list').then(m => m.BookList)
           },
           {
             path: 'new',
             canActivate: [authGuard, roleGuard],
             data: { expectedRoles: ['ADMIN', 'MANAGER'] },
-            loadComponent: () => import('./features/books/components/book-form/book-form').then(m => m.BookForm)
+            loadComponent: () => import('./features/admin/books/components/book-form/book-form').then(m => m.BookForm)
           },
           {
             path: 'edit/:id',
             canActivate: [authGuard, roleGuard],
             data: { expectedRoles: ['ADMIN', 'MANAGER'] },
-            loadComponent: () => import('./features/books/components/book-form/book-form').then(m => m.BookForm)
+            loadComponent: () => import('./features/admin/books/components/book-form/book-form').then(m => m.BookForm)
           }
         ]
       }

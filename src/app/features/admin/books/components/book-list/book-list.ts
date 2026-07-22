@@ -3,9 +3,9 @@ import { CommonModule } from '@angular/common';
 import { Router, RouterLink } from '@angular/router';
 import { BookService } from '../../services/book.service';
 import { BookResponse } from '../../models/book.model';
-import { DataTableComponent } from '../../../../shared/components/data-table/data-table.component';
-import { ColumnDef } from '../../../../shared/components/data-table/data-table.model';
-import { DataTableActionDirective } from '../../../../shared/components/data-table/data-table-action.directive';
+import { DataTableComponent } from '../../../../../shared/components/data-table/data-table.component';
+import { ColumnDef } from '../../../../../shared/components/data-table/data-table.model';
+import { DataTableActionDirective } from '../../../../../shared/components/data-table/data-table-action.directive';
 
 @Component({
   selector: 'app-book-list',
