@@ -1,44 +1,40 @@
-<div class="author-list-container">
-  <h2>Gestion des Auteurs</h2>
+<div class="p-6 max-w-7xl mx-auto space-y-6">
 
-  <!-- 1. État de chargement -->
-  @if (isLoading) {
-    <div class="loading">Chargement des auteurs depuis le serveur...</div>
-  }
+  <!-- En-tête -->
+  <div class="flex justify-between items-center">
+    <div>
+      <h1 class="text-2xl font-bold text-slate-800">Gestion des Auteurs</h1>
+      <p class="text-sm text-slate-500">Gérez les auteurs enregistrés dans le catalogue</p>
+    </div>
+    <a routerLink="/authors/new"
+       class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-medium text-sm rounded-lg shadow-sm transition-colors inline-flex items-center gap-1">
+      <span>+</span>
+      <span>Nouvel Auteur</span>
+    </a>
+  </div>
 
-  <!-- 2. Gestion des erreurs du backend -->
-  @if (errorMessage) {
-    <div class="error-banner">{{ errorMessage }}</div>
-  }
+  <!-- Le DataTable avec ton modèle exact -->
+  <app-data-table
+    [data]="authors()"
+    [columns]="columns"
+    [isLoading]="isLoading()"
+    [errorMessage]="errorMessage()"
+    emptyMessage="Aucun auteur trouvé dans la base de données.">
 
-  <button routerLink="/authors/new" class="btn-add">Ajouter un auteur</button>
+    <!-- Actions personnalisées par ligne -->
+    <ng-template appTableActions let-author>
+      <div class="flex items-center justify-end space-x-2">
+        <a [routerLink]="['/authors/edit', author.id]"
+           class="px-2.5 py-1 text-xs font-medium text-blue-600 hover:bg-blue-50 rounded-md transition-colors">
+          Éditer
+        </a>
+        <button (click)="deleteAuthor(author)"
+                class="px-2.5 py-1 text-xs font-medium text-red-600 hover:bg-red-50 rounded-md transition-colors">
+          Supprimer
+        </button>
+      </div>
+    </ng-template>
 
-  <!-- 3. Affichage de la liste si elle n'est pas vide -->
-  @if (!isLoading && !errorMessage) {
-    @if (authors.length === 0) {
-      <p class="no-data">Aucun auteur enregistré pour le moment.</p>
-    } @else {
-      <table class="authors-table">
-        <thead>
-          <tr>
-            <th>Prénom</th>
-            <th>Nom</th>
-            <th>Lieu de naissance</th>
-            <th>Date de naissance</th>
-          </tr>
-        </thead>
-        <tbody>
-          @for (author of authors; track author.id) {
-            <tr>
-              <td>{{ author.firstName }}</td>
-              <td>{{ author.lastName }}</td>
-              <td>{{ author.birthPlace || 'Non renseigné' }}</td>
-              <!-- Le pipe 'date' formate la chaîne reçue de Spring Boot au format français -->
-              <td>{{ author.birthDate ? (author.birthDate | date:'dd/MM/yyyy') : 'Non renseignée' }}</td>
-            </tr>
-          }
-        </tbody>
-      </table>
-    }
-  }
+  </app-data-table>
+
 </div>

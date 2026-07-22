@@ -1,42 +1,60 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { RouterLink } from '@angular/router';
 import { AuthorService } from '../../services/author.service';
 import { AuthorResponse } from '../../models/author.model';
+import { DataTableComponent } from '../../../../shared/components/data-table/data-table.component';
+import { ColumnDef } from '../../../../shared/components/data-table/data-table.model';
+import { DataTableActionDirective } from '../../../../shared/components/data-table/data-table-action.directive';
 
 @Component({
   selector: 'app-author-list',
   standalone: true,
-  imports: [CommonModule],
-  templateUrl: './author-list.html',
-  styleUrl: './author-list.css'
+  imports: [CommonModule, RouterLink, DataTableComponent, DataTableActionDirective],
+  templateUrl: './author-list.html'
 })
 export class AuthorList implements OnInit {
-  // On injecte notre service d'auteurs
   private authorService = inject(AuthorService);
 
-  // Notre tableau local pour stocker les auteurs reçus de Spring Boot
-  authors: AuthorResponse[] = [];
+  authors = signal<AuthorResponse[]>([]);
+  isLoading = signal<boolean>(true);
+  errorMessage = signal<string>('');
 
-  // Variables optionnelles pour gérer l'expérience utilisateur
-  isLoading = true;
-  errorMessage = '';
+  // Configuration des colonnes calquée sur ton modèle AuthorResponse
+  columns: ColumnDef<AuthorResponse>[] = [
+    { key: 'firstName', header: 'Prénom', class: 'font-semibold text-slate-900' },
+    { key: 'lastName', header: 'Nom', class: 'font-semibold text-slate-900' },
+    { key: 'birthPlace', header: 'Lieu de naissance' },
+    { key: 'birthDate', header: 'Date de naissance' }
+  ];
 
   ngOnInit(): void {
     this.loadAuthors();
   }
 
-  // Fonction pour appeler le backend Spring Boot
   loadAuthors(): void {
+    this.isLoading.set(true);
     this.authorService.getAuthors().subscribe({
       next: (data) => {
-        this.authors = data;
-        this.isLoading = false;
+        this.authors.set(data);
+        this.isLoading.set(false);
       },
       error: (err) => {
-        console.error('Erreur lors du chargement des auteurs', err);
-        this.errorMessage = 'Impossible de charger la liste des auteurs. Vérifiez que le backend Java est démarré.';
-        this.isLoading = false;
+        console.error('Erreur chargement auteurs:', err);
+        this.errorMessage.set('Impossible de récupérer la liste des auteurs.');
+        this.isLoading.set(false);
       }
     });
+  }
+
+  deleteAuthor(author: AuthorResponse): void {
+    if (confirm(`Êtes-vous sûr de vouloir supprimer l'auteur ${author.firstName} ${author.lastName} ?`)) {
+      this.authorService.deleteAuthor(author.id).subscribe({
+        next: () => {
+          this.authors.update(list => list.filter(a => a.id !== author.id));
+        },
+        error: () => alert('Erreur lors de la suppression de l\'auteur.')
+      });
+    }
   }
 }

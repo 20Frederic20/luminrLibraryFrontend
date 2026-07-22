@@ -2,6 +2,8 @@ import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { AuthorRequest, AuthorResponse } from '../models/author.model';
+import { ApiResponse, Page } from '../../../core/models/api-response.model';
+import { unwrapPage } from '../../../core/utils/rxjs-operator';
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +14,9 @@ export class AuthorService {
 
   // Récupérer la liste des auteurs (renvoie un tableau d'AuthorResponse)
   getAuthors(): Observable<AuthorResponse[]> {
-    return this.http.get<AuthorResponse[]>(this.apiUrl);
+    return this.http
+          .get<ApiResponse<Page<AuthorResponse>>>(this.apiUrl)
+          .pipe(unwrapPage());
   }
 
   // Créer un nouvel auteur (prend un AuthorRequest en paramètre)
