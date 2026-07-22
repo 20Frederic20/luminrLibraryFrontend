@@ -1,39 +1,39 @@
-<div class="publisher-list-container">
-  <div class="list-header">
-    <h2>Gestion des Éditeurs</h2>
-    <button routerLink="/publishers/new" class="btn-primary">Nouvel Éditeur</button>
+<div class="p-6 max-w-7xl mx-auto space-y-6">
+
+  <!-- En-tête -->
+  <div class="flex justify-between items-center">
+    <div>
+      <h1 class="text-2xl font-bold text-slate-800">Gestion des Éditeurs</h1>
+      <p class="text-sm text-slate-500">Gérez les maisons d'édition partenaires</p>
+    </div>
+    <a routerLink="/publishers/new"
+       class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-medium text-sm rounded-lg shadow-sm transition-colors flex items-center gap-1">
+      <span>+</span>
+      <span>Nouvel Éditeur</span>
+    </a>
   </div>
 
-  @if (isLoading) {
-    <div class="loading-state">Chargement des éditeurs...</div>
-  }
+  <!-- DataTable -->
+  <app-data-table
+    [data]="publishers()"
+    [columns]="columns"
+    [isLoading]="isLoading()"
+    [errorMessage]="errorMessage()"
+    emptyMessage="Aucun éditeur trouvé dans la base de données.">
 
-  @if (errorMessage) {
-    <div class="error-banner">{{ errorMessage }}</div>
-  }
+    <ng-template appTableActions let-publisher>
+      <div class="flex items-center justify-end space-x-2">
+        <a [routerLink]="['/publishers/edit', publisher.id]"
+           class="px-2.5 py-1 text-xs font-medium text-blue-600 hover:bg-blue-50 rounded-md transition-colors">
+          Éditer
+        </a>
+        <button (click)="deletePublisher(publisher)"
+                class="px-2.5 py-1 text-xs font-medium text-red-600 hover:bg-red-50 rounded-md transition-colors">
+          Supprimer
+        </button>
+      </div>
+    </ng-template>
 
-  @if (!isLoading && !errorMessage) {
-    @if (publishers.length === 0) {
-      <p class="no-data">Aucun éditeur enregistré.</p>
-    } @else {
-      <table class="publishers-table">
-        <thead>
-          <tr>
-            <th>Code</th>
-            <th>Nom</th>
-            <th>Adresse</th>
-          </tr>
-        </thead>
-        <tbody>
-          @for (publisher of publishers; track publisher.id) {
-            <tr>
-              <td><code>{{ publisher.code }}</code></td>
-              <td>{{ publisher.name }}</td>
-              <td>{{ publisher.address || 'Non renseignée' }}</td>
-            </tr>
-          }
-        </tbody>
-      </table>
-    }
-  }
+  </app-data-table>
+
 </div>

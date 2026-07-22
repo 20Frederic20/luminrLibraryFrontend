@@ -1,33 +1,94 @@
-<div class="publisher-form-container">
-  <h2>Ajouter un Éditeur</h2>
+<div class="max-w-3xl mx-auto p-6">
 
-  <form [formGroup]="publisherForm" (ngSubmit)="onSubmit()">
+  <!-- En-tête -->
+  <div class="mb-6 flex items-center justify-between">
+    <div>
+      <h1 class="text-2xl font-bold text-slate-800">
+        {{ isEditMode() ? 'Modifier l\'éditeur' : 'Créer un nouvel éditeur' }}
+      </h1>
+      <p class="text-sm text-slate-500">Renseignez les informations de la maison d'édition</p>
+    </div>
+    <a routerLink="/publishers"
+       class="px-4 py-2 text-sm font-medium text-slate-600 bg-white border border-slate-300 rounded-lg hover:bg-slate-50 transition-colors">
+      Annuler
+    </a>
+  </div>
 
-    <div class="form-group">
-      <label for="code">Code Éditeur *</label>
-      <input type="text" id="code" formControlName="code" placeholder="Ex: EYR, HACH, OREIL...">
-      @if (publisherForm.get('code')?.invalid && publisherForm.get('code')?.touched) {
-        <small class="error-text">Le code éditeur est obligatoire.</small>
-      }
+  <!-- Message d'erreur -->
+  @if (errorMessage()) {
+    <div class="mb-6 p-4 text-sm text-red-700 bg-red-50 border border-red-200 rounded-lg">
+      {{ errorMessage() }}
+    </div>
+  }
+
+  <!-- Formulaire Card -->
+  <form [formGroup]="publisherForm" (ngSubmit)="onSubmit()" class="bg-white rounded-xl border border-slate-200 shadow-sm p-6 space-y-6">
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+      <!-- Nom de l'éditeur -->
+      <div class="md:col-span-2">
+        <label for="name" class="block text-sm font-medium text-slate-700 mb-1">Nom de la maison d'édition *</label>
+        <input
+          id="name"
+          type="text"
+          formControlName="name"
+          placeholder="ex: Éditions Gallimard"
+          class="w-full px-3 py-2 border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-600 transition-colors"
+          [ngClass]="isFieldInvalid('name') ? 'border-red-500 bg-red-50/30' : 'border-slate-300'" />
+        @if (isFieldInvalid('name')) {
+          <p class="mt-1 text-xs text-red-600">Le nom est requis (min. 2 caractères).</p>
+        }
+      </div>
+
+      <!-- Code Éditeur -->
+      <div>
+        <label for="code" class="block text-sm font-medium text-slate-700 mb-1">Code Éditeur *</label>
+        <input
+          id="code"
+          type="text"
+          formControlName="code"
+          placeholder="ex: GAL-001"
+          class="w-full px-3 py-2 border rounded-lg text-sm font-mono focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-600 transition-colors"
+          [ngClass]="isFieldInvalid('code') ? 'border-red-500 bg-red-50/30' : 'border-slate-300'" />
+        @if (isFieldInvalid('code')) {
+          <p class="mt-1 text-xs text-red-600">Le code est requis.</p>
+        }
+      </div>
+
+      <!-- Adresse -->
+      <div>
+        <label for="address" class="block text-sm font-medium text-slate-700 mb-1">Adresse</label>
+        <input
+          id="address"
+          type="text"
+          formControlName="address"
+          placeholder="ex: 5 Rue de Sébastien-Bottin, Paris"
+          class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-600 transition-colors" />
+      </div>
+
     </div>
 
-    <div class="form-group">
-      <label for="name">Nom de l'éditeur *</label>
-      <input type="text" id="name" formControlName="name" placeholder="Ex: Eyrolles, Hachette...">
-      @if (publisherForm.get('name')?.invalid && publisherForm.get('name')?.touched) {
-        <small class="error-text">Le nom est obligatoire.</small>
-      }
-    </div>
+    <!-- Actions -->
+    <div class="flex items-center justify-end space-x-3 pt-4 border-t border-slate-100">
+      <a routerLink="/publishers"
+         class="px-4 py-2 text-sm font-medium text-slate-600 hover:text-slate-800 transition-colors">
+        Annuler
+      </a>
 
-    <div class="form-group">
-      <label for="address">Adresse</label>
-      <input type="text" id="address" formControlName="address" placeholder="Ex: Paris, France">
-    </div>
-
-    <div class="form-actions">
-      <button type="button" class="btn-secondary" routerLink="/publishers">Annuler</button>
-      <button type="submit" class="btn-primary" [disabled]="publisherForm.invalid">Enregistrer</button>
+      <button
+        type="submit"
+        [disabled]="isSubmitting()"
+        class="px-5 py-2 bg-blue-600 hover:bg-blue-700 disabled:opacity-50 text-white font-medium text-sm rounded-lg shadow-sm transition-colors flex items-center space-x-2">
+        @if (isSubmitting()) {
+          <div class="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+          <span>Enregistrement...</span>
+        } @else {
+          <span>{{ isEditMode() ? 'Mettre à jour' : 'Créer l\'éditeur' }}</span>
+        }
+      </button>
     </div>
 
   </form>
+
 </div>
