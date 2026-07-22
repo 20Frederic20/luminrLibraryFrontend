@@ -9,9 +9,9 @@ import { AuthorRequest } from '../../models/author.model';
   selector: 'app-author-form',
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule, RouterLink],
-  templateUrl: './author-form.html'
+  templateUrl: './author-form.component.html'
 })
-export class AuthorForm implements OnInit {
+export class AuthorFormComponent implements OnInit {
   private fb = inject(FormBuilder);
   private authorService = inject(AuthorService);
   private router = inject(Router);
@@ -21,13 +21,13 @@ export class AuthorForm implements OnInit {
   isEditMode = signal<boolean>(false);
   authorId = signal<string | null>(null);
 
+  isLoadingData = signal<boolean>(false);
   isSubmitting = signal<boolean>(false);
   errorMessage = signal<string>('');
 
   ngOnInit(): void {
     this.initForm();
 
-    // Vérification du mode Édition via le paramètre d'URL ID
     const id = this.route.snapshot.paramMap.get('id');
     if (id) {
       this.isEditMode.set(true);
@@ -46,16 +46,32 @@ export class AuthorForm implements OnInit {
   }
 
   private loadAuthorData(id: string): void {
+    this.isLoadingData.set(true);
+    this.authorForm.disable(); // Verrouille le formulaire pendant le chargement
+
     this.authorService.getAuthorById(id).subscribe({
       next: (author) => {
+        // Formatte la date au format YYYY-MM-DD requis par les inputs type="date"
+        const formattedDate = author.birthDate
+          ? new Date(author.birthDate).toISOString().split('T')[0]
+          : '';
+
         this.authorForm.patchValue({
           firstName: author.firstName,
           lastName: author.lastName,
           birthPlace: author.birthPlace,
-          birthDate: author.birthDate
+          birthDate: formattedDate
         });
+
+        this.authorForm.enable();
+        this.isLoadingData.set(false);
       },
-      error: () => this.errorMessage.set('Impossible de charger les données de l\'auteur.')
+      error: (err) => {
+        console.error('Erreur chargement auteur :', err);
+        this.errorMessage.set('Impossible de charger les données de l\'auteur.');
+        this.authorForm.enable();
+        this.isLoadingData.set(false);
+      }
     });
   }
 
@@ -81,13 +97,16 @@ export class AuthorForm implements OnInit {
       },
       error: (err) => {
         console.error('Erreur enregistrement :', err);
-        this.errorMessage.set('Une erreur est survenue lors de l\'enregistrement.');
+        if (err.error?.message) {
+          this.errorMessage.set(err.error.message);
+        } else {
+          this.errorMessage.set('Une erreur est survenue lors de l\'enregistrement.');
+        }
         this.isSubmitting.set(false);
       }
     });
   }
 
-  // Helpers pour afficher facilement les erreurs dans le HTML
   isFieldInvalid(field: string): boolean {
     const control = this.authorForm.get(field);
     return !!(control && control.invalid && (control.dirty || control.touched));

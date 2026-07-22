@@ -16,7 +16,7 @@ export const routes: Routes = [
     children: [
       {
         path: 'login',
-        loadComponent: () => import('./features/auth/login/login').then(m => m.Login)
+        loadComponent: () => import('./features/auth/login/login.component').then(m => m.LoginComponent)
       },
       {
         path: 'register',
@@ -27,7 +27,7 @@ export const routes: Routes = [
 
   // 2. ROUTES ADMINISTRATIVES (Sous AdminLayout : Avec Sidebar et Topbar)
   {
-    path: '',
+    path: 'admin',
     component: AdminLayout,
     children: [
       {
@@ -40,13 +40,13 @@ export const routes: Routes = [
         children: [
           {
             path: '',
-            loadComponent: () => import('./features/authors/components/author-list/author-list').then(m => m.AuthorList)
+            loadComponent: () => import('./features/authors/components/author-list/author-list.component').then(m => m.AuthorListComponent)
           },
           {
             path: 'new',
             canActivate: [authGuard, roleGuard],
             data: { expectedRoles: ['ADMIN'] },
-            loadComponent: () => import('./features/authors/components/author-form/author-form').then(m => m.AuthorForm)
+            loadComponent: () => import('./features/authors/components/author-form/author-form.component').then(m => m.AuthorFormComponent)
           }
         ]
       },

@@ -4,37 +4,37 @@ export const MENU_ITEMS: MenuItem[] = [
   {
     title: 'Livres',
     icon: 'book-open',
-    baseRoute: '/books',
+    baseRoute: '/admin/books',
     actions: [
-      { label: 'Lister les livres', route: '/books', icon: 'list' },
-      { label: 'Nouveau livre', route: '/books/new', icon: 'plus-circle' }
+      { label: 'Lister les livres', route: '/admin/books', icon: 'list' },
+      { label: 'Nouveau livre', route: '/admin/books/new', icon: 'plus-circle' }
     ]
   },
   {
     title: 'Catégories',
     icon: 'tag',
-    baseRoute: '/categories',
+    baseRoute: '/admin/categories',
     actions: [
-      { label: 'Lister les catégories', route: '/categories', icon: 'list' },
-      { label: 'Nouvelle catégorie', route: '/categories/new', icon: 'plus-circle' }
+      { label: 'Lister les catégories', route: '/admin/categories', icon: 'list' },
+      { label: 'Nouvelle catégorie', route: '/admin/categories/new', icon: 'plus-circle' }
     ]
   },
   {
     title: 'Auteurs',
     icon: 'user-group',
-    baseRoute: '/authors',
+    baseRoute: '/admin/authors',
     actions: [
-      { label: 'Lister les auteurs', route: '/authors', icon: 'list' },
-      { label: 'Nouvel auteur', route: '/authors/new', icon: 'plus-circle' }
+      { label: 'Lister les auteurs', route: '/admin/authors', icon: 'list' },
+      { label: 'Nouvel auteur', route: '/admin/authors/new', icon: 'plus-circle' }
     ]
   },
   {
     title: 'Éditeurs',
     icon: 'building-office',
-    baseRoute: '/publishers',
+    baseRoute: '/admin/publishers',
     actions: [
-      { label: 'Lister les éditeurs', route: '/publishers', icon: 'list' },
-      { label: 'Nouvel éditeur', route: '/publishers/new', icon: 'plus-circle' }
+      { label: 'Lister les éditeurs', route: '/admin/publishers', icon: 'list' },
+      { label: 'Nouvel éditeur', route: '/admin/publishers/new', icon: 'plus-circle' }
     ]
   }
 ];

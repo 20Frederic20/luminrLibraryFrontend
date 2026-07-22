@@ -24,7 +24,7 @@
     <!-- Actions personnalisées par ligne -->
     <ng-template appTableActions let-author>
       <div class="flex items-center justify-end space-x-2">
-        <a [routerLink]="['/authors/edit', author.id]"
+        <a (click)="updateAuthor(author)"
            class="px-2.5 py-1 text-xs font-medium text-blue-600 hover:bg-blue-50 rounded-md transition-colors">
           Éditer
         </a>

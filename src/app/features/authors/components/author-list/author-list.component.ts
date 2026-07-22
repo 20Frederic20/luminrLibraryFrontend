@@ -1,6 +1,6 @@
 import { Component, OnInit, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { AuthorService } from '../../services/author.service';
 import { AuthorResponse } from '../../models/author.model';
 import { DataTableComponent } from '../../../../shared/components/data-table/data-table.component';
@@ -11,10 +11,11 @@ import { DataTableActionDirective } from '../../../../shared/components/data-tab
   selector: 'app-author-list',
   standalone: true,
   imports: [CommonModule, RouterLink, DataTableComponent, DataTableActionDirective],
-  templateUrl: './author-list.html'
+  templateUrl: './author-list.component.html'
 })
-export class AuthorList implements OnInit {
+export class AuthorListComponent implements OnInit {
   private authorService = inject(AuthorService);
+  private router = inject(Router)
 
   authors = signal<AuthorResponse[]>([]);
   isLoading = signal<boolean>(true);
@@ -45,6 +46,10 @@ export class AuthorList implements OnInit {
         this.isLoading.set(false);
       }
     });
+  }
+
+  updateAuthor(author: AuthorResponse): void {
+    this.router.navigate(['admin/authors', author.id]);
   }
 
   deleteAuthor(author: AuthorResponse): void {
