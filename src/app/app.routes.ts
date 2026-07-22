@@ -1,4 +1,5 @@
 import { Routes } from '@angular/router';
+import { authGuard } from './core/guards/auth.guard';
 
 export const routes: Routes = [
   {
@@ -35,6 +36,7 @@ export const routes: Routes = [
       },
       {
         path: 'new',
+        canActivate: [authGuard],
         loadComponent: () => import('./features/authors/components/author-form/author-form').then(m => m.AuthorForm)
       }
     ]
@@ -49,6 +51,7 @@ export const routes: Routes = [
       },
       {
         path: 'new',
+        canActivate: [authGuard],
         loadComponent: () => import('./features/publishers/components/publisher-form/publisher-form').then(m => m.PublisherForm)
       }
     ]
@@ -63,6 +66,7 @@ export const routes: Routes = [
       },
       {
         path: 'new',
+        canActivate: [authGuard],
         loadComponent: () => import('./features/categories/components/category-form/category-form').then(m => m.CategoryForm)
       }
     ]
@@ -77,6 +81,7 @@ export const routes: Routes = [
       },
       {
         path: 'new',
+        canActivate: [authGuard],
         loadComponent: () => import('./features/books/components/book-form/book-form').then(m => m.BookForm)
       }
     ]
