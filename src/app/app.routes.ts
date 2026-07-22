@@ -1,5 +1,6 @@
 import { Routes } from '@angular/router';
 import { authGuard } from './core/guards/auth.guard';
+import { roleGuard } from './core/guards/role.guard';
 
 export const routes: Routes = [
   {
@@ -36,7 +37,8 @@ export const routes: Routes = [
       },
       {
         path: 'new',
-        canActivate: [authGuard],
+        canActivate: [authGuard, roleGuard],
+        data: { expectedRoles: ['ADMIN'] },
         loadComponent: () => import('./features/authors/components/author-form/author-form').then(m => m.AuthorForm)
       }
     ]
@@ -51,7 +53,8 @@ export const routes: Routes = [
       },
       {
         path: 'new',
-        canActivate: [authGuard],
+        canActivate: [authGuard, roleGuard],
+        data: { expectedRoles: ['ADMIN'] },
         loadComponent: () => import('./features/publishers/components/publisher-form/publisher-form').then(m => m.PublisherForm)
       }
     ]
@@ -66,7 +69,8 @@ export const routes: Routes = [
       },
       {
         path: 'new',
-        canActivate: [authGuard],
+        canActivate: [authGuard, roleGuard],
+        data: { expectedRoles: ['ADMIN'] },
         loadComponent: () => import('./features/categories/components/category-form/category-form').then(m => m.CategoryForm)
       }
     ]
@@ -81,7 +85,8 @@ export const routes: Routes = [
       },
       {
         path: 'new',
-        canActivate: [authGuard],
+        canActivate: [authGuard, roleGuard],
+        data: { expectedRoles: ['ADMIN', 'MANAGER'] },
         loadComponent: () => import('./features/books/components/book-form/book-form').then(m => m.BookForm)
       }
     ]

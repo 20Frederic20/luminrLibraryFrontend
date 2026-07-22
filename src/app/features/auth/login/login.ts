@@ -28,7 +28,7 @@ export class Login {
 
       this.authService.login(credentials).subscribe({
         next: (response) => {
-          const returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/dashboard';
+          const returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/books';
           this.router.navigateByUrl(returnUrl);
         },
         error: (err) => alert('Identifiants incorrects.')
