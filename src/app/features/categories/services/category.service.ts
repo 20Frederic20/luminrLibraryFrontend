@@ -10,33 +10,32 @@ import { unwrapPage } from '../../../core/utils/rxjs-operator';
 })
 export class CategoryService {
   private http = inject(HttpClient);
-  private apiUrl = 'http://localhost:8082/api/categories';
 
   getCategories(): Observable<CategoryResponse[]> {
     return this.http
-      .get<ApiResponse<Page<CategoryResponse>>>(this.apiUrl)
+      .get<ApiResponse<Page<CategoryResponse>>>('/categories')
       .pipe(unwrapPage());
   }
 
   getCategoryById(id: string): Observable<CategoryResponse> {
-    return this.http.get<ApiResponse<CategoryResponse>>(`${this.apiUrl}/${id}`).pipe(
+    return this.http.get<ApiResponse<CategoryResponse>>(`/categories/${id}`).pipe(
       map((response: ApiResponse<CategoryResponse>) => response.data)
     );
   }
 
   createCategory(categoryData: CategoryRequest): Observable<CategoryResponse> {
-    return this.http.post<ApiResponse<CategoryResponse>>(this.apiUrl, categoryData).pipe(
+    return this.http.post<ApiResponse<CategoryResponse>>('/categories', categoryData).pipe(
       map((response: ApiResponse<CategoryResponse>) => response.data)
     );
   }
 
   updateCategory(id: string, categoryData: CategoryRequest): Observable<CategoryResponse> {
-    return this.http.put<ApiResponse<CategoryResponse>>(`${this.apiUrl}/${id}`, categoryData).pipe(
+    return this.http.put<ApiResponse<CategoryResponse>>(`/categories/${id}`, categoryData).pipe(
       map((response: ApiResponse<CategoryResponse>) => response.data)
     );
   }
 
   deleteCategory(id: string): Observable<void> {
-    return this.http.delete<void>(`${this.apiUrl}/${id}`);
+    return this.http.delete<void>(`/categories/${id}`);
   }
 }

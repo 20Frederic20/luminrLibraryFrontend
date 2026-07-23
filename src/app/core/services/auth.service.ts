@@ -9,10 +9,9 @@ import { ApiResponse } from '../models/api-response.model';
 })
 export class AuthService {
   private http = inject(HttpClient);
-  private apiUrl = 'http://localhost:8082/api/auth'; // L'URL de ton Spring Boot
 
   login(credentials: { email: string; password: string }): Observable<AuthResponse> {
-    return this.http.post<ApiResponse<AuthResponse>>(`${this.apiUrl}/login`, credentials).pipe(
+    return this.http.post<ApiResponse<AuthResponse>>(`/auth/login`, credentials).pipe(
       map(response => {
         localStorage.setItem('accessToken', response.data.accessToken);
         localStorage.setItem('refreshToken', response.data.refreshToken);
@@ -34,7 +33,7 @@ export class AuthService {
   }
 
   register(userData: any): Observable<any> {
-    return this.http.post(`${this.apiUrl}/register`, userData);
+    return this.http.post(`/auth/register`, userData);
   }
 
   isLoggedIn(): boolean {

@@ -10,32 +10,31 @@ import { unwrapPage } from '../../../core/utils/rxjs-operator';
 })
 export class AuthorService {
   private http = inject(HttpClient);
-  private apiUrl = 'http://localhost:8082/api/authors'; // L'URL de ton contrôleur Java
 
   // Récupérer la liste des auteurs (renvoie un tableau d'AuthorResponse)
   getAuthors(): Observable<AuthorResponse[]> {
     return this.http
-          .get<ApiResponse<Page<AuthorResponse>>>(this.apiUrl)
+          .get<ApiResponse<Page<AuthorResponse>>>('/authors')
           .pipe(unwrapPage());
   }
 
   // Créer un nouvel auteur (prend un AuthorRequest en paramètre)
   createAuthor(authorData: AuthorRequest): Observable<AuthorResponse> {
-    return this.http.post<AuthorResponse>(this.apiUrl, authorData);
+    return this.http.post<AuthorResponse>('/authors', authorData);
   }
 
   // Récupérer un auteur par ID
   getAuthorById(id: string): Observable<AuthorResponse> {
-    return this.http.get<AuthorResponse>(`${this.apiUrl}/${id}`);
+    return this.http.get<AuthorResponse>(`/authors/${id}`);
   }
 
   // Mettre à jour un auteur (prend un AuthorRequest en paramètre)
   updateAuthor(id: string, authorData: AuthorRequest): Observable<AuthorResponse> {
-    return this.http.put<AuthorResponse>(`${this.apiUrl}/${id}`, authorData);
+    return this.http.put<AuthorResponse>(`/authors/${id}`, authorData);
   }
 
   // Supprimer un auteur par ID
   deleteAuthor(id: string): Observable<void> {
-    return this.http.delete<void>(`${this.apiUrl}/${id}`);
+    return this.http.delete<void>(`/authors/${id}`);
   }
 }

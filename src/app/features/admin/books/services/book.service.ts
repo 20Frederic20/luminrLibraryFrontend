@@ -10,32 +10,31 @@ import { unwrapData, unwrapPage } from '../../../../core/utils/rxjs-operator';
 })
 export class BookService {
   private http = inject(HttpClient);
-  private apiUrl = 'http://localhost:8082/api/books'; // Adapte selon ton URL backend
 
   // Récupérer tous les livres
   getBooks(): Observable<BookResponse[]> {
     return this.http
-      .get<ApiResponse<Page<BookResponse>>>(this.apiUrl)
+      .get<ApiResponse<Page<BookResponse>>>('/books')
       .pipe(unwrapPage());
   }
 
   // Récupérer un livre par son UUID
   getBookById(id: string): Observable<BookResponse> {
-    return this.http.get<ApiResponse<BookResponse>>(`${this.apiUrl}/${id}`).pipe(unwrapData());
+    return this.http.get<ApiResponse<BookResponse>>(`/books/${id}`).pipe(unwrapData());
   }
 
   // Créer un nouveau livre (CreateBookRequest)
   createBook(bookData: SaveBookRequest): Observable<BookResponse> {
-    return this.http.post<BookResponse>(this.apiUrl, bookData);
+    return this.http.post<BookResponse>(`/books`, bookData);
   }
 
   // Mettre à jour un livre existant (UpdateBookRequest)
   updateBook(id: string, bookData: SaveBookRequest): Observable<BookResponse> {
-    return this.http.put<BookResponse>(`${this.apiUrl}/${id}`, bookData);
+    return this.http.put<BookResponse>(`/books/${id}`, bookData);
   }
 
   // Supprimer un livre
   deleteBook(id: string): Observable<void> {
-    return this.http.delete<void>(`${this.apiUrl}/${id}`);
+    return this.http.delete<void>(`/books/${id}`);
   }
 }
