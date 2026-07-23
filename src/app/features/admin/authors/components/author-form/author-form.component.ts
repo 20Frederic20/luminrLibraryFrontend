@@ -93,7 +93,7 @@ export class AuthorFormComponent implements OnInit {
     request$.subscribe({
       next: () => {
         this.isSubmitting.set(false);
-        this.router.navigate(['/authors']);
+        this.router.navigate(['/admin/authors']);
       },
       error: (err) => {
         console.error('Erreur enregistrement :', err);

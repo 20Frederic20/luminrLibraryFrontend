@@ -49,7 +49,7 @@ export class BookList implements OnInit {
   }
 
   updateBook(book: BookResponse): void {
-    this.router.navigate(['/books/edit', book.id]);
+    this.router.navigate(['/admin/books/edit', book.id]);
   }
 
   deleteBook(book: BookResponse): void {

@@ -1,0 +1,68 @@
+<div class="bg-slate-50 text-slate-800 antialiased min-h-screen flex flex-col">
+  <app-header></app-header>
+
+  <main class="flex-grow max-w-4xl w-full mx-auto px-6 py-10">
+
+    <a routerLink="/authors" class="inline-flex items-center gap-2 text-sm font-semibold text-slate-600 hover:text-emerald-700 transition-colors mb-6">
+      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
+      </svg>
+      Retour aux auteurs
+    </a>
+
+    <!-- Skeleton -->
+    @if (isLoading()) {
+      <div class="bg-white rounded-2xl border border-slate-200 p-8 animate-pulse flex items-center space-x-6">
+        <div class="w-24 h-24 bg-slate-200 rounded-full"></div>
+        <div class="space-y-3 flex-1">
+          <div class="h-6 bg-slate-200 rounded w-1/3"></div>
+          <div class="h-4 bg-slate-200 rounded w-1/4"></div>
+        </div>
+      </div>
+    }
+
+    <!-- Erreur -->
+    @if (errorMessage()) {
+      <div class="p-4 rounded-xl bg-rose-50 border border-rose-200 text-rose-700 text-sm">
+        {{ errorMessage() }}
+      </div>
+    }
+
+    <!-- Fiche Auteur -->
+    @if (!isLoading() && author(); as a) {
+      <div class="bg-white rounded-2xl border border-slate-200 shadow-xs overflow-hidden">
+
+        <div class="bg-gradient-to-r from-emerald-800 to-slate-900 p-8 text-white flex flex-col sm:flex-row items-center gap-6">
+          <div class="w-28 h-28 rounded-full bg-white/10 backdrop-blur-md border-2 border-white/20 flex items-center justify-center font-extrabold text-3xl shadow-lg shrink-0">
+            {{ getInitials(a.firstName, a.lastName) }}
+          </div>
+
+          <div class="space-y-2 text-center sm:text-left">
+            <h1 class="text-3xl font-extrabold leading-tight">{{ a.firstName }} {{ a.lastName }}</h1>
+            <p class="text-xs font-mono text-emerald-300">ID: {{ a.id }}</p>
+          </div>
+        </div>
+
+        <div class="p-8 grid grid-cols-1 sm:grid-cols-2 gap-6 text-sm">
+          <div class="bg-slate-50 p-4 rounded-xl border border-slate-100">
+            <span class="text-xs text-slate-400 block font-medium">Lieu de naissance</span>
+            <span class="font-semibold text-slate-800 text-base mt-1 block">
+              {{ a.birthPlace || 'Non renseigné' }}
+            </span>
+          </div>
+
+          <div class="bg-slate-50 p-4 rounded-xl border border-slate-100">
+            <span class="text-xs text-slate-400 block font-medium">Date de naissance</span>
+            <span class="font-semibold text-slate-800 text-base mt-1 block">
+              {{ a.birthDate || 'Non renseignée' }}
+            </span>
+          </div>
+        </div>
+
+      </div>
+    }
+
+  </main>
+
+  <app-footer></app-footer>
+</div>

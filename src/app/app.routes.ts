@@ -10,11 +10,30 @@ export const routes: Routes = [
   },
   {
     path: 'books',
-    loadComponent: () => import('./features/books/components/book-list/book-list.component').then(m => m.BookListComponent)
+    children: [
+      {
+        path: '',
+        loadComponent: () => import('./features/books/components/book-list/book-list.component').then(m => m.BookListComponent)
+      },
+      {
+        path: ':id',
+        loadComponent: () => import('./features/books/components/book-detail/book-detail.component').then(m => m.BookDetailComponent)
+      }
+    ]
   },
+
   {
-    path: 'books/:id',
-    loadComponent: () => import('./features/books/components/book-detail/book-detail.component').then(m => m.BookDetailComponent)
+    path: 'authors',
+    children: [
+      {
+        path: '',
+        loadComponent: () => import('./features/authors/components/author-list/author-list.component').then(m => m.AuthorListComponent)
+      },
+      {
+        path: ':id',
+        loadComponent: () => import('./features/authors/components/author-detail/author-detail.component').then(m => m.AuthorDetailComponent)
+      }
+    ]
   },
 
   // 1. ROUTES D'AUTHENTIFICATION (Hors AdminLayout : Plein écran sans Sidebar)
@@ -47,13 +66,13 @@ export const routes: Routes = [
         children: [
           {
             path: '',
-            loadComponent: () => import('./features/authors/components/author-list/author-list.component').then(m => m.AuthorListComponent)
+            loadComponent: () => import('./features/admin/authors/components/author-list/author-list.component').then(m => m.AuthorListComponent)
           },
           {
             path: 'new',
             canActivate: [authGuard, roleGuard],
             data: { expectedRoles: ['ADMIN'] },
-            loadComponent: () => import('./features/authors/components/author-form/author-form.component').then(m => m.AuthorFormComponent)
+            loadComponent: () => import('./features/admin/authors/components/author-form/author-form.component').then(m => m.AuthorFormComponent)
           }
         ]
       },

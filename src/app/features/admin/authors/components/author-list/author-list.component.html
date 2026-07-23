@@ -1,0 +1,40 @@
+<div class="p-6 max-w-7xl mx-auto space-y-6">
+
+  <!-- En-tête -->
+  <div class="flex justify-between items-center">
+    <div>
+      <h1 class="text-2xl font-bold text-slate-800">Gestion des Auteurs</h1>
+      <p class="text-sm text-slate-500">Gérez les auteurs enregistrés dans le catalogue</p>
+    </div>
+    <a routerLink="/admin/authors/new"
+       class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-medium text-sm rounded-lg shadow-sm transition-colors inline-flex items-center gap-1">
+      <span>+</span>
+      <span>Nouvel Auteur</span>
+    </a>
+  </div>
+
+  <!-- Le DataTable avec ton modèle exact -->
+  <app-data-table
+    [data]="authors()"
+    [columns]="columns"
+    [isLoading]="isLoading()"
+    [errorMessage]="errorMessage()"
+    emptyMessage="Aucun auteur trouvé dans la base de données.">
+
+    <!-- Actions personnalisées par ligne -->
+    <ng-template appTableActions let-author>
+      <div class="flex items-center justify-end space-x-2">
+        <a (click)="updateAuthor(author)"
+           class="px-2.5 py-1 text-xs font-medium text-blue-600 hover:bg-blue-50 rounded-md transition-colors">
+          Éditer
+        </a>
+        <button (click)="deleteAuthor(author)"
+                class="px-2.5 py-1 text-xs font-medium text-red-600 hover:bg-red-50 rounded-md transition-colors">
+          Supprimer
+        </button>
+      </div>
+    </ng-template>
+
+  </app-data-table>
+
+</div>

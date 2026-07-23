@@ -8,11 +8,11 @@ import { catchError } from 'rxjs/operators';
 import { BookService } from '../../services/book.service';
 import { CategoryService } from '../../../categories/services/category.service';
 import { PublisherService } from '../../../publishers/services/publisher.service';
-import { AuthorService } from '../../../../authors/services/author.service';
+import { AuthorService } from '../../../authors/services/author.service';
 
 import { CategoryResponse } from '../../../categories/models/category.model';
 import { PublisherResponse } from '../../../publishers/models/publisher.model';
-import { AuthorResponse } from '../../../../authors/models/author.model';
+import { AuthorResponse } from '../../../authors/models/author.model';
 import { SaveBookRequest } from '../../models/book.model';
 
 @Component({
@@ -139,7 +139,7 @@ export class BookForm implements OnInit {
     request$.subscribe({
       next: () => {
         this.isSubmitting.set(false);
-        this.router.navigate(['/books']);
+        this.router.navigate(['/admin/books']);
       },
       error: (err) => {
         console.error('Erreur enregistrement livre :', err);

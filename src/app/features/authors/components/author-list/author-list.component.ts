@@ -1,39 +1,46 @@
-import { Component, OnInit, inject, signal } from '@angular/core';
+import { Component, OnInit, inject, signal, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Router, RouterLink } from '@angular/router';
+import { RouterLink } from '@angular/router';
+import { FormsModule } from '@angular/forms';
 import { AuthorService } from '../../services/author.service';
 import { AuthorResponse } from '../../models/author.model';
-import { DataTableComponent } from '../../../../shared/components/data-table/data-table.component';
-import { ColumnDef } from '../../../../shared/components/data-table/data-table.model';
-import { DataTableActionDirective } from '../../../../shared/components/data-table/data-table-action.directive';
+import { HeaderComponent } from '../../../../shared/components/header/header.component';
+import { FooterComponent } from '../../../../shared/components/footer/footer.component';
 
 @Component({
   selector: 'app-author-list',
   standalone: true,
-  imports: [CommonModule, RouterLink, DataTableComponent, DataTableActionDirective],
+  imports: [CommonModule, RouterLink, FormsModule, HeaderComponent, FooterComponent],
   templateUrl: './author-list.component.html'
 })
 export class AuthorListComponent implements OnInit {
   private authorService = inject(AuthorService);
-  private router = inject(Router)
 
   authors = signal<AuthorResponse[]>([]);
   isLoading = signal<boolean>(true);
-  errorMessage = signal<string>('');
+  errorMessage = signal<string | null>(null);
 
-  // Configuration des colonnes calquée sur ton modèle AuthorResponse
-  columns: ColumnDef<AuthorResponse>[] = [
-    { key: 'firstName', header: 'Prénom', class: 'font-semibold text-slate-900' },
-    { key: 'lastName', header: 'Nom', class: 'font-semibold text-slate-900' },
-    { key: 'birthPlace', header: 'Lieu de naissance' },
-    { key: 'birthDate', header: 'Date de naissance' }
-  ];
+  searchQuery = signal<string>('');
+
+  // Filtrage réactif par nom, prénom ou lieu de naissance
+  filteredAuthors = computed(() => {
+    const query = this.searchQuery().toLowerCase().trim();
+
+    return this.authors().filter(author => {
+      if (!query) return true;
+
+      const fullName = `${author.firstName || ''} ${author.lastName || ''}`.toLowerCase();
+      const birthPlace = author.birthPlace?.toLowerCase() || '';
+
+      return fullName.includes(query) || birthPlace.includes(query);
+    });
+  });
 
   ngOnInit(): void {
-    this.loadAuthors();
+    this.fetchAuthors();
   }
 
-  loadAuthors(): void {
+  fetchAuthors(): void {
     this.isLoading.set(true);
     this.authorService.getAuthors().subscribe({
       next: (data) => {
@@ -42,24 +49,15 @@ export class AuthorListComponent implements OnInit {
       },
       error: (err) => {
         console.error('Erreur chargement auteurs:', err);
-        this.errorMessage.set('Impossible de récupérer la liste des auteurs.');
+        this.errorMessage.set('Impossible de charger la liste des auteurs.');
         this.isLoading.set(false);
       }
     });
   }
 
-  updateAuthor(author: AuthorResponse): void {
-    this.router.navigate(['admin/authors', author.id]);
-  }
-
-  deleteAuthor(author: AuthorResponse): void {
-    if (confirm(`Êtes-vous sûr de vouloir supprimer l'auteur ${author.firstName} ${author.lastName} ?`)) {
-      this.authorService.deleteAuthor(author.id).subscribe({
-        next: () => {
-          this.authors.update(list => list.filter(a => a.id !== author.id));
-        },
-        error: () => alert('Erreur lors de la suppression de l\'auteur.')
-      });
-    }
+  getInitials(firstName: string, lastName: string): string {
+    const f = firstName ? firstName.charAt(0).toUpperCase() : '';
+    const l = lastName ? lastName.charAt(0).toUpperCase() : '';
+    return `${f}${l}` || 'A';
   }
 }

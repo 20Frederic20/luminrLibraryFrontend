@@ -1,4 +1,4 @@
-import { AuthorResponse } from '../../authors/models/author.model';
+import { AuthorResponse } from '../../admin/authors/models/author.model';
 import { CategoryResponse } from '../../admin/categories/models/category.model';
 import { PublisherResponse } from '../../admin/publishers/models/publisher.model';
 
