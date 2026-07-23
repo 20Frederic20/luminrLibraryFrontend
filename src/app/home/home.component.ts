@@ -3,8 +3,8 @@ import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { BookService } from '../features/admin/books/services/book.service';
 import { BookResponse } from '../features/admin/books/models/book.model';
-import { HeaderComponent } from '../shared/components/header/header.component';
-import { FooterComponent } from '../shared/components/footer/footer.component';
+import { HeaderComponent } from '../shared/layouts/header/header.component';
+import { FooterComponent } from '../shared/layouts/footer/footer.component';
 
 @Component({
   selector: 'app-home',

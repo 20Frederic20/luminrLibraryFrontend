@@ -1,0 +1,59 @@
+<div class="bg-slate-50 text-slate-800 antialiased min-h-screen flex flex-col">
+  <app-header></app-header>
+
+  <main class="flex-grow max-w-4xl w-full mx-auto px-6 py-10">
+
+    <a routerLink="/categories" class="inline-flex items-center gap-2 text-sm font-semibold text-slate-600 hover:text-emerald-700 transition-colors mb-6">
+      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
+      </svg>
+      Retour aux catégories
+    </a>
+
+    <!-- Skeleton -->
+    @if (isLoading()) {
+      <div class="bg-white rounded-2xl border border-slate-200 p-8 animate-pulse space-y-4">
+        <div class="h-8 bg-slate-200 rounded w-1/3"></div>
+        <div class="h-16 bg-slate-200 rounded w-full"></div>
+      </div>
+    }
+
+    <!-- Erreur -->
+    @if (errorMessage()) {
+      <div class="p-4 rounded-xl bg-rose-50 border border-rose-200 text-rose-700 text-sm">
+        {{ errorMessage() }}
+      </div>
+    }
+
+    <!-- Fiche Catégorie -->
+    @if (!isLoading() && category(); as c) {
+      <div class="bg-white rounded-2xl border border-slate-200 shadow-xs overflow-hidden">
+
+        <div class="bg-gradient-to-r from-emerald-800 to-teal-900 p-8 text-white space-y-2">
+          <span class="text-xs uppercase font-mono tracking-widest text-emerald-300 block">Catégorie</span>
+          <h1 class="text-3xl font-extrabold">{{ c.name }}</h1>
+        </div>
+
+        <div class="p-8 space-y-6">
+          <div>
+            <h2 class="text-xs font-bold uppercase tracking-wider text-slate-400 mb-2">Description</h2>
+            <p class="text-slate-700 leading-relaxed text-sm whitespace-pre-line">
+              {{ c.description || 'Aucune description fournie pour cette catégorie.' }}
+            </p>
+          </div>
+
+          <div class="pt-6 border-t border-slate-100 flex items-center justify-between">
+            <span class="text-xs text-slate-400 font-mono">ID: {{ c.id }}</span>
+            <a [routerLink]="['/books']" [queryParams]="{ category: c.name }" class="bg-emerald-600 hover:bg-emerald-700 text-white font-semibold text-xs py-2.5 px-4 rounded-xl transition-colors">
+              Voir tous les livres de cette catégorie
+            </a>
+          </div>
+        </div>
+
+      </div>
+    }
+
+  </main>
+
+  <app-footer></app-footer>
+</div>

@@ -36,6 +36,20 @@ export const routes: Routes = [
     ]
   },
 
+  {
+    path: 'categories',
+    children: [
+      {
+        path: '',
+        loadComponent: () => import('./features/categories/components/category-list/category-list.component').then(m => m.CategoryListComponent)
+      },
+      {
+        path: ':id',
+        loadComponent: () => import('./features/categories/components/category-detail/category-detail.component').then(m => m.CategoryDetailComponent)
+      }
+    ]
+  },
+
   // 1. ROUTES D'AUTHENTIFICATION (Hors AdminLayout : Plein écran sans Sidebar)
   {
     path: 'auth',
@@ -46,7 +60,7 @@ export const routes: Routes = [
       },
       {
         path: 'register',
-        loadComponent: () => import('./features/auth/register/register').then(m => m.Register)
+        loadComponent: () => import('./features/auth/register/register.component').then(m => m.RegisterComponent)
       }
     ]
   },
