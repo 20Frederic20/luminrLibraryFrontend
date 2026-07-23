@@ -8,6 +8,14 @@ export const routes: Routes = [
     path: '',
     loadComponent: () => import('./home/home.component').then(m => m.HomeComponent)
   },
+  {
+    path: 'books',
+    loadComponent: () => import('./features/books/components/book-list/book-list.component').then(m => m.BookListComponent)
+  },
+  {
+    path: 'books/:id',
+    loadComponent: () => import('./features/books/components/book-detail/book-detail.component').then(m => m.BookDetailComponent)
+  },
 
   // 1. ROUTES D'AUTHENTIFICATION (Hors AdminLayout : Plein écran sans Sidebar)
   {

@@ -1,0 +1,111 @@
+<div class="bg-slate-50 text-slate-800 antialiased min-h-screen flex flex-col">
+  <app-header></app-header>
+
+  <main class="flex-grow max-w-5xl w-full mx-auto px-6 py-10">
+
+    <a routerLink="/books" class="inline-flex items-center gap-2 text-sm font-semibold text-slate-600 hover:text-emerald-700 transition-colors mb-6">
+      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
+      </svg>
+      Retour au catalogue
+    </a>
+
+    <!-- Skeleton -->
+    @if (isLoading()) {
+      <div class="bg-white rounded-2xl border border-slate-200 p-8 animate-pulse space-y-6">
+        <div class="h-8 bg-slate-200 rounded w-1/2"></div>
+        <div class="h-4 bg-slate-200 rounded w-1/4"></div>
+        <div class="h-32 bg-slate-200 rounded"></div>
+      </div>
+    }
+
+    <!-- Erreur -->
+    @if (errorMessage()) {
+      <div class="p-4 rounded-xl bg-rose-50 border border-rose-200 text-rose-700 text-sm">
+        {{ errorMessage() }}
+      </div>
+    }
+
+    <!-- Fiche du Livre -->
+    @if (!isLoading() && book(); as b) {
+      <div class="bg-white rounded-2xl border border-slate-200 shadow-xs overflow-hidden grid grid-cols-1 md:grid-cols-12">
+
+        <!-- Couverture -->
+        <div class="md:col-span-5 bg-gradient-to-br from-emerald-800 to-slate-900 p-8 text-white flex flex-col justify-between min-h-[360px]">
+          <span class="text-xs font-bold uppercase tracking-wider bg-black/20 backdrop-blur-xs px-3 py-1.5 rounded-full w-fit">
+            {{ b.category.name || 'Ouvrage' }}
+          </span>
+
+          <div class="space-y-3">
+            <h1 class="text-2xl sm:text-3xl font-extrabold leading-tight">{{ b.title }}</h1>
+
+            <!-- Liste dynamique des auteurs avec Puces -->
+            <div class="space-y-1">
+              <span class="text-xs uppercase tracking-wider text-slate-300 font-semibold block">Auteur(s) :</span>
+              <div class="flex flex-wrap gap-1.5">
+                @for (author of b.authors; track author.id) {
+                  <span class="bg-white/10 text-xs px-2.5 py-1 rounded-md text-white font-medium border border-white/10">
+                    {{ author.firstName }} {{ author.lastName }}
+                  </span>
+                } @empty {
+                  <span class="text-xs text-slate-400 italic">Auteur non renseigné</span>
+                }
+              </div>
+            </div>
+          </div>
+
+          <div class="pt-4 border-t border-white/10 flex items-center justify-between text-xs text-slate-300">
+            <span>ISBN</span>
+            <span class="font-mono bg-white/10 px-2.5 py-1 rounded text-white">{{ b.isbn || 'N/A' }}</span>
+          </div>
+        </div>
+
+        <!-- Informations -->
+        <div class="md:col-span-7 p-8 flex flex-col justify-between space-y-6">
+          <div class="space-y-4">
+            <h2 class="text-lg font-bold text-slate-900 border-b border-slate-100 pb-2">Description</h2>
+            <p class="text-slate-600 text-sm leading-relaxed whitespace-pre-line">
+              {{ b.description || 'Aucune description détaillée disponible pour cet ouvrage.' }}
+            </p>
+          </div>
+
+          <div class="space-y-6 pt-4 border-t border-slate-100">
+            <!-- Grille d'informations secondaires -->
+            <div class="grid grid-cols-2 gap-4 text-xs">
+              <div>
+                <span class="text-slate-400 block">Éditeur</span>
+                <span class="font-semibold text-slate-800">{{ b.publisher.name || 'Inconnu' }}</span>
+              </div>
+              <div>
+                <span class="text-slate-400 block">Date de publication</span>
+                <span class="font-semibold text-slate-800">{{ b.publicationDate || 'Inconnue' }}</span>
+              </div>
+              <div>
+                <span class="text-slate-400 block">Exemplaires disponibles</span>
+                <span class="font-semibold" [ngClass]="b.availableQuantity > 0 ? 'text-emerald-600' : 'text-rose-600'">
+                  {{ b.availableQuantity }} / {{ b.quantity }}
+                </span>
+              </div>
+              <div>
+                <span class="text-slate-400 block">Catégorie</span>
+                <span class="font-semibold text-slate-800">{{ b.category.name || 'Non spécifié' }}</span>
+              </div>
+            </div>
+
+            <!-- Bouton d'action -->
+            <div class="pt-2">
+              <a routerLink="/auth/login" class="block w-full bg-emerald-600 hover:bg-emerald-700 text-white font-semibold text-xs py-3 px-4 rounded-xl text-center transition-colors shadow-xs">
+                Se connecter pour réserver
+              </a>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    }
+
+  </main>
+
+  <app-footer></app-footer>
+</div>
