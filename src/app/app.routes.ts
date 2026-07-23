@@ -6,8 +6,7 @@ import { AdminLayout } from './shared/layouts/admin-layout/admin-layout';
 export const routes: Routes = [
   {
     path: '',
-    redirectTo: 'auth/login',
-    pathMatch: 'full'
+    loadComponent: () => import('./home/home.component').then(m => m.HomeComponent)
   },
 
   // 1. ROUTES D'AUTHENTIFICATION (Hors AdminLayout : Plein écran sans Sidebar)
