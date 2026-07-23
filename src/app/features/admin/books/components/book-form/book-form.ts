@@ -6,12 +6,12 @@ import { forkJoin, of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 
 import { BookService } from '../../services/book.service';
-import { CategoryService } from '../../../../categories/services/category.service';
-import { PublisherService } from '../../../../publishers/services/publisher.service';
+import { CategoryService } from '../../../categories/services/category.service';
+import { PublisherService } from '../../../publishers/services/publisher.service';
 import { AuthorService } from '../../../../authors/services/author.service';
 
-import { CategoryResponse } from '../../../../categories/models/category.model';
-import { PublisherResponse } from '../../../../publishers/models/publisher.model';
+import { CategoryResponse } from '../../../categories/models/category.model';
+import { PublisherResponse } from '../../../publishers/models/publisher.model';
 import { AuthorResponse } from '../../../../authors/models/author.model';
 import { SaveBookRequest } from '../../models/book.model';
 

@@ -2,8 +2,8 @@ import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { PublisherRequest, PublisherResponse, PublisherUpdateRequest } from '../models/publisher.model';
-import { ApiResponse, Page } from '../../../core/models/api-response.model';
-import { unwrapPage } from '../../../core/utils/rxjs-operator';
+import { ApiResponse, Page } from '../../../../core/models/api-response.model';
+import { unwrapPage } from '../../../../core/utils/rxjs-operator';
 
 @Injectable({
   providedIn: 'root'

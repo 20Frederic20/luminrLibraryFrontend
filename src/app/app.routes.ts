@@ -63,13 +63,13 @@ export const routes: Routes = [
         children: [
           {
             path: '',
-            loadComponent: () => import('./features/publishers/components/publisher-list/publisher-list').then(m => m.PublisherList)
+            loadComponent: () => import('./features/admin/publishers/components/publisher-list/publisher-list').then(m => m.PublisherList)
           },
           {
             path: 'new',
             canActivate: [authGuard, roleGuard],
             data: { expectedRoles: ['ADMIN'] },
-            loadComponent: () => import('./features/publishers/components/publisher-form/publisher-form').then(m => m.PublisherForm)
+            loadComponent: () => import('./features/admin/publishers/components/publisher-form/publisher-form').then(m => m.PublisherForm)
           }
         ]
       },
@@ -79,13 +79,13 @@ export const routes: Routes = [
         children: [
           {
             path: '',
-            loadComponent: () => import('./features/categories/components/category-list/category-list').then(m => m.CategoryList)
+            loadComponent: () => import('./features/admin/categories/components/category-list/category-list').then(m => m.CategoryList)
           },
           {
             path: 'new',
             canActivate: [authGuard, roleGuard],
             data: { expectedRoles: ['ADMIN'] },
-            loadComponent: () => import('./features/categories/components/category-form/category-form.component').then(m => m.CategoryFormComponent)
+            loadComponent: () => import('./features/admin/categories/components/category-form/category-form.component').then(m => m.CategoryFormComponent)
           }
         ]
       },

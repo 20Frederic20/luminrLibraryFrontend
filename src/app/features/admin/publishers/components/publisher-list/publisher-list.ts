@@ -3,9 +3,9 @@ import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { PublisherService } from '../../services/publisher.service';
 import { PublisherResponse } from '../../models/publisher.model';
-import { DataTableComponent } from '../../../../shared/components/data-table/data-table.component';
-import { ColumnDef } from '../../../../shared/components/data-table/data-table.model';
-import { DataTableActionDirective } from '../../../../shared/components/data-table/data-table-action.directive';
+import { DataTableComponent } from '../../../../../shared/components/data-table/data-table.component';
+import { ColumnDef } from '../../../../../shared/components/data-table/data-table.model';
+import { DataTableActionDirective } from '../../../../../shared/components/data-table/data-table-action.directive';
 
 @Component({
   selector: 'app-publisher-list',

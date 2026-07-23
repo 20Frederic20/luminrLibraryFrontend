@@ -46,7 +46,7 @@ export class CategoryFormComponent {
       next: () => {
         this.isSubmitting.set(false);
         // Redirection directe vers la liste
-        this.router.navigate(['/categories']);
+        this.router.navigate(['/admin/categories']);
       },
       error: (err) => {
         this.isSubmitting.set(false);

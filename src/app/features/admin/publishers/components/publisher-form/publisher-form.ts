@@ -82,7 +82,7 @@ export class PublisherForm implements OnInit {
 
   private handleSuccess(): void {
     this.isSubmitting.set(false);
-    this.router.navigate(['/publishers']);
+    this.router.navigate(['/admin/publishers']);
   }
 
   private handleError(err: any): void {
