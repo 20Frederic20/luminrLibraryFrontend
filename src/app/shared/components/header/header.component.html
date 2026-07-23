@@ -33,13 +33,22 @@
     </ul>
 
     <!-- Actions Utilisateur -->
-    <div class="flex items-center gap-3">
-      <a routerLink="/auth/login" class="text-xs sm:text-sm font-semibold text-slate-700 hover:text-emerald-700 px-4 py-2 rounded-lg transition-colors">
-        Connexion
+    @if (!isLoggedIn()) {
+      <a routerLink="/auth/login" class="text-sm font-semibold text-emerald-600 hover:underline">
+        Se connecter
       </a>
-      <a routerLink="/auth/register" class="text-xs sm:text-sm font-semibold bg-emerald-600 text-white px-4 py-2 rounded-lg hover:bg-emerald-700 transition-colors shadow-xs">
-        S'inscrire
-      </a>
-    </div>
+    }
+
+    <!-- Affiché si CONNECTÉ -->
+    @if (isLoggedIn()) {
+      <div class="flex items-center gap-4">
+        <a routerLink="/profile" class="text-sm font-medium text-slate-700 hover:text-emerald-600">
+          Mon Profil
+        </a>
+        <button (click)="logout()" class="text-sm font-medium text-rose-600 hover:underline">
+          Déconnexion
+        </button>
+      </div>
+    }
   </nav>
 </header>

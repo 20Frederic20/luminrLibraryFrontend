@@ -40,6 +40,10 @@ export class AuthService {
     return !!localStorage.getItem('accessToken');
   }
 
+  getUserEmail(): string | null {
+    return localStorage.getItem('email');
+  }
+
   // Se déconnecter
   logout(): void {
     localStorage.removeItem('accessToken');

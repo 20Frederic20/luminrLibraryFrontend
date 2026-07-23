@@ -1,7 +1,8 @@
-import { Component, signal } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterOutlet } from '@angular/router';
 import { SidebarComponent } from '../../components/sidebar/sidebar.component';
+import { AuthService } from '../../../core/services/auth.service';
 
 @Component({
   selector: 'app-admin-layout',
@@ -12,6 +13,7 @@ import { SidebarComponent } from '../../components/sidebar/sidebar.component';
 export class AdminLayout {
   // Signal pour gérer l'ouverture de la sidebar sur écran mobile
   isMobileSidebarOpen = signal<boolean>(false);
+  authService = inject(AuthService);
 
   toggleMobileSidebar(): void {
     this.isMobileSidebarOpen.set(!this.isMobileSidebarOpen());
@@ -19,5 +21,17 @@ export class AdminLayout {
 
   closeMobileSidebar(): void {
     this.isMobileSidebarOpen.set(false);
+  }
+
+  isLoggedIn(): boolean {
+    return this.authService.isLoggedIn();
+  }
+
+  getUserName(): string | null {
+    return this.authService.getUserEmail();
+  }
+
+  logout(): void {
+    this.authService.logout();
   }
 }
