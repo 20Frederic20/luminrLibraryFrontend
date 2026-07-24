@@ -1,0 +1,215 @@
+<div class="max-w-3xl mx-auto p-4 sm:p-6 lg:p-8">
+
+  <!-- Entête avec Fil d'Ariane / Retour vers Admin Users -->
+  <div class="mb-6">
+    <a routerLink="/admin/users" class="inline-flex items-center text-xs font-medium text-slate-500 hover:text-slate-700 transition-colors mb-2">
+      <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+      </svg>
+      Retour à la liste des utilisateurs
+    </a>
+    <h1 class="text-xl sm:text-2xl font-bold text-slate-800">
+      {{ isEditMode() ? 'Modifier l\'utilisateur' : 'Créer un nouvel utilisateur' }}
+    </h1>
+    <p class="text-xs sm:text-sm text-slate-500 mt-0.5">
+      {{ isEditMode() ? 'Modifiez les informations et permissions de l\'utilisateur ci-dessous' : 'Renseignez les informations pour ajouter un utilisateur à la plate-forme' }}
+    </p>
+  </div>
+
+  <!-- Message d'erreur global -->
+  @if (errorMessage()) {
+    <div class="mb-6 p-4 rounded-lg bg-rose-50 border border-rose-200 flex items-start space-x-3">
+      <svg class="w-5 h-5 text-rose-500 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+      </svg>
+      <div class="flex-1">
+        <h3 class="text-xs font-bold text-rose-800 uppercase tracking-wider">Erreur</h3>
+        <p class="text-xs text-rose-700 mt-0.5">{{ errorMessage() }}</p>
+      </div>
+    </div>
+  }
+
+  <!-- Formulaire Card -->
+  <div class="bg-white rounded-xl border border-slate-200 shadow-xs p-6 sm:p-8 relative">
+
+    <!-- Indicator de chargement si mode édition -->
+    @if (isLoadingData()) {
+      <div class="absolute inset-0 bg-white/70 backdrop-blur-xs z-10 flex items-center justify-center rounded-xl">
+        <div class="flex items-center space-x-2 text-slate-500 text-sm font-medium">
+          <svg class="animate-spin h-5 w-5 text-blue-600" fill="none" viewBox="0 0 24 24">
+            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+          </svg>
+          <span>Chargement des données...</span>
+        </div>
+      </div>
+    }
+
+    <form [formGroup]="userForm" (ngSubmit)="onSubmit()" class="space-y-6">
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+        <!-- Prénom -->
+        <div class="space-y-1.5">
+          <label for="firstName" class="block text-xs font-semibold text-slate-700 uppercase tracking-wider">
+            Prénom <span class="text-rose-500">*</span>
+          </label>
+          <input
+            id="firstName"
+            type="text"
+            formControlName="firstName"
+            placeholder="ex: Jean"
+            class="w-full px-3.5 py-2.5 text-sm bg-slate-50 border rounded-lg text-slate-800 placeholder:text-slate-400 focus:bg-white focus:outline-none focus:ring-2 transition-all duration-150"
+            [ngClass]="{
+              'border-rose-300 focus:border-rose-500 focus:ring-rose-500/20 bg-rose-50/30': isFieldInvalid('firstName'),
+              'border-slate-200 focus:border-blue-500 focus:ring-blue-500/20': !isFieldInvalid('firstName')
+            }" />
+          @if (isFieldInvalid('firstName')) {
+            <p class="flex items-center text-xs text-rose-600 mt-1">
+              <svg class="w-3.5 h-3.5 mr-1 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+              </svg>
+              Le prénom est requis (min. 2 caractères).
+            </p>
+          }
+        </div>
+
+        <!-- Nom -->
+        <div class="space-y-1.5">
+          <label for="lastName" class="block text-xs font-semibold text-slate-700 uppercase tracking-wider">
+            Nom <span class="text-rose-500">*</span>
+          </label>
+          <input
+            id="lastName"
+            type="text"
+            formControlName="lastName"
+            placeholder="ex: Dupont"
+            class="w-full px-3.5 py-2.5 text-sm bg-slate-50 border rounded-lg text-slate-800 placeholder:text-slate-400 focus:bg-white focus:outline-none focus:ring-2 transition-all duration-150"
+            [ngClass]="{
+              'border-rose-300 focus:border-rose-500 focus:ring-rose-500/20 bg-rose-50/30': isFieldInvalid('lastName'),
+              'border-slate-200 focus:border-blue-500 focus:ring-blue-500/20': !isFieldInvalid('lastName')
+            }" />
+          @if (isFieldInvalid('lastName')) {
+            <p class="flex items-center text-xs text-rose-600 mt-1">
+              <svg class="w-3.5 h-3.5 mr-1 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+              </svg>
+              Le nom est requis (min. 2 caractères).
+            </p>
+          }
+        </div>
+
+        <!-- Email -->
+        <div class="space-y-1.5 md:col-span-2">
+          <label for="email" class="block text-xs font-semibold text-slate-700 uppercase tracking-wider">
+            Adresse Email <span class="text-rose-500">*</span>
+          </label>
+          <input
+            id="email"
+            type="email"
+            formControlName="email"
+            placeholder="ex: jean.dupont@example.com"
+            class="w-full px-3.5 py-2.5 text-sm bg-slate-50 border rounded-lg text-slate-800 placeholder:text-slate-400 focus:bg-white focus:outline-none focus:ring-2 transition-all duration-150"
+            [ngClass]="{
+              'border-rose-300 focus:border-rose-500 focus:ring-rose-500/20 bg-rose-50/30': isFieldInvalid('email'),
+              'border-slate-200 focus:border-blue-500 focus:ring-blue-500/20': !isFieldInvalid('email')
+            }" />
+          @if (isFieldInvalid('email')) {
+            <p class="flex items-center text-xs text-rose-600 mt-1">
+              <svg class="w-3.5 h-3.5 mr-1 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+              </svg>
+              Veuillez saisir une adresse email valide.
+            </p>
+          }
+        </div>
+
+        <!-- Mot de passe -->
+        <div class="space-y-1.5 md:col-span-2">
+          <label for="password" class="block text-xs font-semibold text-slate-700 uppercase tracking-wider">
+            Mot de passe @if (!isEditMode()) { <span class="text-rose-500">*</span> }
+          </label>
+          <input
+            id="password"
+            type="password"
+            formControlName="password"
+            [placeholder]="isEditMode() ? 'Laissez vide pour conserver le mot de passe actuel' : '••••••••'"
+            class="w-full px-3.5 py-2.5 text-sm bg-slate-50 border rounded-lg text-slate-800 placeholder:text-slate-400 focus:bg-white focus:outline-none focus:ring-2 transition-all duration-150"
+            [ngClass]="{
+              'border-rose-300 focus:border-rose-500 focus:ring-rose-500/20 bg-rose-50/30': isFieldInvalid('password'),
+              'border-slate-200 focus:border-blue-500 focus:ring-blue-500/20': !isFieldInvalid('password')
+            }" />
+          @if (isFieldInvalid('password')) {
+            <p class="flex items-center text-xs text-rose-600 mt-1">
+              <svg class="w-3.5 h-3.5 mr-1 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+              </svg>
+              Le mot de passe doit contenir au moins 6 caractères.
+            </p>
+          }
+        </div>
+
+        <!-- Rôles -->
+        <div class="space-y-1.5 md:col-span-2">
+          <label for="roles" class="block text-xs font-semibold text-slate-700 uppercase tracking-wider">
+            Rôles <span class="text-rose-500">*</span>
+          </label>
+          <select
+            id="roles"
+            multiple
+            formControlName="roles"
+            class="w-full px-3.5 py-2.5 text-sm bg-slate-50 border border-slate-200 rounded-lg text-slate-800 focus:bg-white focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all duration-150 h-28">
+            @for (role of availableRoles; track role.value) {
+              <option [value]="role.value">{{ role.label }}</option>
+            }
+          </select>
+          <p class="text-xs text-slate-400 mt-1">Maintenez la touche Ctrl (ou Cmd) pour sélectionner plusieurs rôles.</p>
+        </div>
+
+        <!-- Statut (Actif / Inactif) -->
+        <div class="flex items-center space-x-3 md:col-span-2 pt-2">
+          <input
+            id="isActive"
+            type="checkbox"
+            formControlName="isActive"
+            class="w-4 h-4 text-blue-600 border-slate-300 rounded-xs focus:ring-blue-500" />
+          <label for="isActive" class="text-sm font-medium text-slate-700 cursor-pointer">
+            Compte actif
+          </label>
+        </div>
+
+      </div>
+
+      <!-- Actions -->
+      <div class="flex flex-col-reverse sm:flex-row sm:items-center sm:justify-end gap-3 pt-4 border-t border-slate-100">
+        <a
+          routerLink="/admin/users"
+          class="w-full sm:w-auto px-5 py-2.5 text-sm font-medium text-slate-600 bg-white border border-slate-300 rounded-lg shadow-xs hover:bg-slate-50 transition-colors text-center"
+        >
+          Annuler
+        </a>
+
+        <button
+          type="submit"
+          [disabled]="isSubmitting() || isLoadingData()"
+          class="w-full sm:w-auto px-5 py-2.5 text-sm font-medium text-white bg-blue-600 rounded-lg shadow-xs hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center justify-center space-x-2 cursor-pointer"
+        >
+          @if (isSubmitting()) {
+            <svg class="animate-spin w-4 h-4 text-white" fill="none" viewBox="0 0 24 24">
+              <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+              <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+            </svg>
+            <span>Enregistrement...</span>
+          } @else {
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+            </svg>
+            <span>{{ isEditMode() ? 'Mettre à jour' : 'Créer l\'utilisateur' }}</span>
+          }
+        </button>
+      </div>
+
+    </form>
+  </div>
+
+</div>

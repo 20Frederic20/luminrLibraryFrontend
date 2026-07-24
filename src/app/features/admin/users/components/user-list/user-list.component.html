@@ -1,0 +1,40 @@
+<div class="p-6 max-w-7xl mx-auto space-y-6">
+
+  <!-- En-tête -->
+  <div class="flex justify-between items-center">
+    <div>
+      <h1 class="text-2xl font-bold text-slate-800">Gestion des Utilisateurs</h1>
+      <p class="text-sm text-slate-500">Gérez les comptes utilisateurs, leurs accès et leurs rôles</p>
+    </div>
+    <a routerLink="/admin/users/new"
+       class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-medium text-sm rounded-lg shadow-xs transition-colors inline-flex items-center gap-1">
+      <span>+</span>
+      <span>Nouvel Utilisateur</span>
+    </a>
+  </div>
+
+  <!-- Le DataTable unifié avec le pattern Admin -->
+  <app-data-table
+    [data]="users()"
+    [columns]="columns"
+    [isLoading]="isLoading()"
+    [errorMessage]="errorMessage()"
+    emptyMessage="Aucun utilisateur trouvé dans la base de données.">
+
+    <!-- Actions personnalisées par ligne -->
+    <ng-template appTableActions let-user>
+      <div class="flex items-center justify-end space-x-2">
+        <a (click)="updateUser(user)"
+           class="px-2.5 py-1 text-xs font-medium text-blue-600 hover:bg-blue-50 rounded-md transition-colors cursor-pointer">
+          Éditer
+        </a>
+        <button (click)="deleteUser(user)"
+                class="px-2.5 py-1 text-xs font-medium text-red-600 hover:bg-red-50 rounded-md transition-colors">
+          Supprimer
+        </button>
+      </div>
+    </ng-template>
+
+  </app-data-table>
+
+</div>

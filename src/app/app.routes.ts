@@ -143,6 +143,22 @@ export const routes: Routes = [
             loadComponent: () => import('./features/admin/books/components/book-form/book-form').then(m => m.BookForm)
           }
         ]
+      },
+
+      {
+        path: 'users',
+        children: [
+          {
+            path: '',
+            loadComponent: () => import('./features/admin/users/components/user-list/user-list.component').then(m => m.UserListComponent)
+          },
+          {
+            path: 'new',
+            canActivate: [authGuard, roleGuard],
+            data: { expectedRoles: ['ADMIN'] },
+            loadComponent: () => import('./features/admin/users/components/user-form/user-form.component').then(m => m.UserFormComponent)
+          }
+        ]
       }
     ]
   },
