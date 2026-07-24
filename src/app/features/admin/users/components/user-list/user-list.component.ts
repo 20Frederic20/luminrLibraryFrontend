@@ -31,9 +31,9 @@ export class UserListComponent implements OnInit {
       formatter: (user) => user.roles?.join(', ') || '-'
     },
     {
-      key: 'isActive',
+      key: 'active',
       header: 'Statut',
-      formatter: (user) => user.isActive ? 'Actif' : 'Inactif'
+      formatter: (user) => user.active ? 'Actif' : 'Inactif'
     }
   ];
 
@@ -57,7 +57,7 @@ export class UserListComponent implements OnInit {
   }
 
   updateUser(user: UserResponse): void {
-    this.router.navigate(['/admin/users', user.id]);
+    this.router.navigate(['/admin/users/edit', user.id]);
   }
 
   deleteUser(user: UserResponse): void {

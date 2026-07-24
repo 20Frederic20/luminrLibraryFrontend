@@ -159,8 +159,8 @@
             multiple
             formControlName="roles"
             class="w-full px-3.5 py-2.5 text-sm bg-slate-50 border border-slate-200 rounded-lg text-slate-800 focus:bg-white focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all duration-150 h-28">
-            @for (role of availableRoles; track role.value) {
-              <option [value]="role.value">{{ role.label }}</option>
+            @for (role of availableRoles(); track role.id) {
+              <option [value]="role.name">{{ role.name }}</option>
             }
           </select>
           <p class="text-xs text-slate-400 mt-1">Maintenez la touche Ctrl (ou Cmd) pour sélectionner plusieurs rôles.</p>
@@ -169,11 +169,11 @@
         <!-- Statut (Actif / Inactif) -->
         <div class="flex items-center space-x-3 md:col-span-2 pt-2">
           <input
-            id="isActive"
+            id="active"
             type="checkbox"
-            formControlName="isActive"
+            formControlName="active"
             class="w-4 h-4 text-blue-600 border-slate-300 rounded-xs focus:ring-blue-500" />
-          <label for="isActive" class="text-sm font-medium text-slate-700 cursor-pointer">
+          <label for="active" class="text-sm font-medium text-slate-700 cursor-pointer">
             Compte actif
           </label>
         </div>

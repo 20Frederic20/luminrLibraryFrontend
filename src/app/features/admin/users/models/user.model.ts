@@ -3,7 +3,7 @@ export interface UserResponse {
   firstName: string;
   lastName: string;
   email: string;
-  isActive: boolean;
+  active: boolean;
   roles: string[];
 }
 
@@ -13,7 +13,7 @@ export interface CreateUserRequest {
   email: string;
   password: string;
   roles?: string[];
-  isActive?: boolean;
+  active?: boolean;
 }
 
 export interface UpdateUserRequest {
@@ -21,5 +21,5 @@ export interface UpdateUserRequest {
   lastName: string;
   email: string;
   roles?: string[];
-  isActive?: boolean;
+  active?: boolean;
 }

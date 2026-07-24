@@ -4,6 +4,8 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { UserService } from '../../services/user.service';
 import { CreateUserRequest, UpdateUserRequest } from '../../models/user.model';
+import { RoleService } from '../../../../../core/services/role.service';
+import { RoleResponse } from '../../../../../core/models/role.model';
 
 @Component({
   selector: 'app-user-form',
@@ -14,6 +16,7 @@ import { CreateUserRequest, UpdateUserRequest } from '../../models/user.model';
 export class UserFormComponent implements OnInit {
   private fb = inject(FormBuilder);
   private userService = inject(UserService);
+  private roleService = inject(RoleService);
   private router = inject(Router);
   private route = inject(ActivatedRoute);
 
@@ -26,11 +29,7 @@ export class UserFormComponent implements OnInit {
   errorMessage = signal<string>('');
 
   // Options de rôles disponibles
-  availableRoles = [
-    { value: 'ROLE_USER', label: 'Utilisateur' },
-    { value: 'ROLE_LIBRARIAN', label: 'Bibliothécaire' },
-    { value: 'ROLE_ADMIN', label: 'Administrateur' }
-  ];
+  availableRoles = signal<RoleResponse[]>([]);
 
   ngOnInit(): void {
     this.initForm();
@@ -41,6 +40,11 @@ export class UserFormComponent implements OnInit {
       this.userId.set(id);
       this.loadUserData(id);
     }
+
+    this.roleService.getRoles().subscribe({
+      next: (roles) => this.availableRoles.set(roles),
+      error: (err) => console.error('Erreur chargement rôles:', err)
+    });
   }
 
   private initForm(): void {
@@ -51,7 +55,7 @@ export class UserFormComponent implements OnInit {
       // Mot de passe requis uniquement à la création
       password: ['', this.isEditMode() ? [] : [Validators.required, Validators.minLength(6)]],
       roles: [['ROLE_USER'], [Validators.required]],
-      isActive: [true]
+      active: [true]
     });
   }
 
@@ -70,7 +74,7 @@ export class UserFormComponent implements OnInit {
           lastName: user.lastName,
           email: user.email,
           roles: user.roles || ['ROLE_USER'],
-          isActive: user.isActive ?? true
+          active: user.active ?? true
         });
 
         this.userForm.enable();

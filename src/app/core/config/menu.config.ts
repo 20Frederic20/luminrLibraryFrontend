@@ -36,5 +36,14 @@ export const MENU_ITEMS: MenuItem[] = [
       { label: 'Lister les éditeurs', route: '/admin/publishers', icon: 'list' },
       { label: 'Nouvel éditeur', route: '/admin/publishers/new', icon: 'plus-circle' }
     ]
+  },
+  {
+    title: 'Utilisateurs',
+    icon: 'users',
+    baseRoute: '/admin/users',
+    actions: [
+      { label: 'Lister les utilisateurs', route: '/admin/users', icon: 'list' },
+      { label: 'Nouvel utilisateur', route: '/admin/users/new', icon: 'plus-circle' }
+    ]
   }
 ];

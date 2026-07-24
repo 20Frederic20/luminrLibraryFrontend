@@ -157,6 +157,12 @@ export const routes: Routes = [
             canActivate: [authGuard, roleGuard],
             data: { expectedRoles: ['ADMIN'] },
             loadComponent: () => import('./features/admin/users/components/user-form/user-form.component').then(m => m.UserFormComponent)
+          },
+          {
+            path: 'edit/:id',
+            canActivate: [authGuard, roleGuard],
+            data: { expectedRoles: ['ADMIN'] },
+            loadComponent: () => import('./features/admin/users/components/user-form/user-form.component').then(m => m.UserFormComponent)
           }
         ]
       }
