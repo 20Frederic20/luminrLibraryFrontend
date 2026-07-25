@@ -31,38 +31,49 @@ export class LoginComponent {
   }
 
   onSubmit(): void {
-    this.errorMessage.set(null);
+  this.errorMessage.set(null);
 
-    if (this.loginForm.invalid) {
-      this.loginForm.markAllAsTouched();
-      return;
-    }
-
-    this.isSubmitting.set(true);
-
-    const credentials = {
-      email: this.loginForm.value.email!,
-      password: this.loginForm.value.password!
-    };
-
-    this.authService.login(credentials).subscribe({
-      next: () => {
-        this.isSubmitting.set(false);
-        const returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/admin/dashboard';
-        this.router.navigateByUrl(returnUrl);
-      },
-      error: (err) => {
-        this.isSubmitting.set(false);
-        if (err.status === 401) {
-          this.errorMessage.set('Email ou mot de passe incorrect.');
-        } else if (err.error?.message) {
-          this.errorMessage.set(err.error.message);
-        } else {
-          this.errorMessage.set('Connexion impossible. Veuillez vérifier votre réseau.');
-        }
-      }
-    });
+  if (this.loginForm.invalid) {
+    this.loginForm.markAllAsTouched();
+    return;
   }
+
+  this.isSubmitting.set(true);
+
+  const credentials = {
+    email: this.loginForm.value.email!,
+    password: this.loginForm.value.password!
+  };
+
+  // 1. Étape 1 : Connexion
+  this.authService.login(credentials).subscribe({
+    next: () => {
+      // 2. Étape 2 : Récupération des infos utilisateur
+      this.authService.loadUserProfile().subscribe({
+        next: () => {
+          this.isSubmitting.set(false);
+          const returnUrl = this.route.snapshot.queryParams['returnUrl'] || '';
+          this.router.navigateByUrl(returnUrl);
+        },
+        error: (err) => {
+          this.isSubmitting.set(false);
+          console.error('Erreur lors de la récupération du profil :', err);
+          this.errorMessage.set('Impossible de charger votre profil utilisateur.');
+        }
+      });
+    },
+    error: (err) => {
+      this.isSubmitting.set(false);
+      if (err.status === 401) {
+        this.errorMessage.set('Email ou mot de passe incorrect.');
+      } else if (err.error?.message) {
+        this.errorMessage.set(err.error.message);
+      } else {
+        this.errorMessage.set('Connexion impossible. Veuillez vérifier votre réseau.');
+      }
+    }
+  });
+}
 
   isFieldInvalid(fieldName: string): boolean {
     const field = this.loginForm.get(fieldName);
